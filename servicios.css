@@ -1,0 +1,336 @@
+/* === Base reutilizable: color por variable === */
+.service-card{
+  --neon: 16,185,129;               /* default (emerald para Básica) */
+  position: relative;
+  border-radius: 1rem;
+  isolation: isolate;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  will-change: transform, box-shadow;
+}
+
+/* Halo externo difuso */
+.service-card::after{
+  content:"";
+  position:absolute;
+  inset:-3px;
+  border-radius: inherit;
+  padding:3px;
+  background: linear-gradient(90deg,
+              rgba(var(--neon),0),
+              rgba(var(--neon),.95),
+              rgba(var(--neon),0));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  filter: blur(14px);
+  opacity:0; pointer-events:none;
+  transition: opacity .25s ease, filter .25s ease;
+}
+
+/* Línea nítida sobre el borde */
+.service-card::before{
+  content:"";
+  position:absolute; inset:0; border-radius: inherit;
+  border:1px solid rgba(var(--neon),.75);
+  opacity:0; pointer-events:none; transition: opacity .25s ease;
+}
+
+/* Interacción */
+@media (hover:hover){
+  .service-card:hover{
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 0 1px rgba(var(--neon),.55),
+      0 0 20px rgba(var(--neon),.45),
+      0 0 48px rgba(var(--neon),.35);
+  }
+  .service-card:hover::before,
+  .service-card:hover::after{ opacity:1; }
+}
+.service-card:focus-visible,
+.service-card:focus-within{
+  transform: translateY(-2px);
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(var(--neon),.55),
+    0 0 22px rgba(var(--neon),.45),
+    0 0 52px rgba(var(--neon),.35);
+}
+.service-card:focus-visible::before,
+.service-card:focus-visible::after,
+.service-card:focus-within::before,
+.service-card:focus-within::after{ opacity:1; }
+.service-card:active{ transform: translateY(-1px) scale(.995); }
+
+@media (prefers-reduced-motion: reduce){ .service-card{ transition:none } }
+
+/* ===== Variantes de color ===== */
+.service-card--basic{    --neon: 16,185,129 }   /* emerald */
+.service-card--inter{    --neon: 34,211,238 }   /* cyan   (#22d3ee) */
+.service-card--advanced{ --neon: 167,139,250 }  /* violet (#a78bfa) */
+
+/* ===== Botón con sweep (mismo sistema por variable) ===== */
+.cta-btn{
+  --btn: 16,185,129;                  /* default emerald */
+  position: relative;
+  overflow: hidden; isolation: isolate; contain: paint;
+  background: rgb(var(--btn)); color:#0b0c10;
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease, background-color .2s ease;
+}
+.cta-btn > span{ position: relative; z-index: 1 }
+
+/* brillo diagonal */
+.cta-btn::after{
+  content:""; position:absolute; top:-40%; left:-30%;
+  width:40%; height:180%; transform: rotate(20deg);
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.40), transparent);
+  filter: blur(2px); opacity:0; pointer-events:none; z-index:0;
+  transition: left .6s ease, opacity .25s ease;
+}
+@media (hover:hover){
+  .cta-btn:hover{ filter: brightness(1.08);
+    box-shadow: 0 0 0 1px rgba(var(--btn),.45), 0 14px 40px rgba(var(--btn),.35);
+    transform: translateY(-1px);
+  }
+  .cta-btn:hover::after{ left:130%; opacity:.9 }
+}
+.cta-btn:focus-visible{
+  filter: brightness(1.08);
+  box-shadow: 0 0 0 2px rgba(var(--btn),.7), 0 0 0 4px #0b0c10;
+}
+.cta-btn:active{ transform: translateY(0) scale(.995) }
+@media (hover:none){ .cta-btn::after{ display:none } }
+
+/* Variantes de botón ligadas a la card */
+.cta-btn--emerald{ --btn: 16,185,129 }    /* Básica */
+.cta-btn--cyan{    --btn: 34,211,238 }    /* Intermedia */
+.cta-btn--violet{  --btn: 167,139,250 }   /* Avanzada */
+
+
+/* Badge superior que hereda el color de la card */
+/* ===== Badge superior (hereda el color --neon de la card) ===== */
+.plan-badge{
+  position:absolute;
+  top:-12px; right:16px;
+  padding:4px 10px;
+  font-size:.75rem;
+  font-weight:800;
+  letter-spacing:.2px;
+  border-radius:8px;
+  background: rgb(var(--neon));
+  color:#0b0c10;
+  border:1px solid rgba(255,255,255,.22);
+  /* brillo base suave */
+  box-shadow:
+    0 4px 14px rgba(var(--neon), .22),
+    inset 0 0 0 1px rgba(0,0,0,.15);
+  white-space:nowrap;
+
+  /* transición para animar el glow */
+  transition:
+    box-shadow .25s ease,
+    transform .25s ease,
+    filter .25s ease;
+}
+
+/* 👉 activa el glow del badge cuando la CARD se hoverea/focusea */
+@media (hover:hover){
+  .service-card:hover .plan-badge{
+    transform: translateY(-1px);
+    filter: saturate(1.15) brightness(1.06);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.18),
+      0 8px 26px rgba(var(--neon), .45),
+      0 0 42px rgba(var(--neon), .55),
+      inset 0 0 0 1px rgba(0,0,0,.15);
+  }
+}
+
+/* también en focus (teclado/tap en mobile) */
+.service-card:focus-visible .plan-badge,
+.service-card:focus-within .plan-badge{
+  transform: translateY(-1px);
+  filter: saturate(1.15) brightness(1.06);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.18),
+    0 8px 26px rgba(var(--neon), .45),
+    0 0 42px rgba(var(--neon), .55),
+    inset 0 0 0 1px rgba(0,0,0,.15);
+}
+/* Lista de features con bullets neón que heredan --neon de .service-card */
+.features{
+  list-style:none; padding:0; margin:0;
+}
+.features li{
+  display:flex; gap:.5rem; align-items:flex-start;
+}
+.features li::before{
+  content:"";
+  flex:none;
+  width:12px; height:12px; margin-top:.35em; border-radius:999px;
+  /* puntito brillante */
+  background:
+    radial-gradient(circle at 30% 30%,
+      rgba(var(--neon),1) 0 45%,
+      rgba(var(--neon),.55) 60%,
+      rgba(var(--neon),0) 61%);
+  box-shadow:
+    0 0 0 1px rgba(var(--neon),.35),
+    0 0 12px rgba(var(--neon),.55);
+  transition: box-shadow .25s ease, transform .25s ease;
+}
+
+/* al hover/focus de la card, los bullets también “suben” el brillo */
+@media (hover:hover){
+  .service-card:hover .features li::before{
+    box-shadow:
+      0 0 0 1px rgba(var(--neon),.55),
+      0 0 18px rgba(var(--neon),.85);
+    transform: translateY(-1px);
+  }
+}
+.service-card:focus-within .features li::before{
+  box-shadow:
+    0 0 0 1px rgba(var(--neon),.55),
+    0 0 18px rgba(var(--neon),.85);
+  transform: translateY(-1px);
+}
+/* Badge circular del logo dentro del botón */
+.wa-badge{
+  display:inline-grid; place-items:center;
+  width:26px; height:26px; border-radius:9999px;
+  background:#25D366;                /* verde oficial WhatsApp */
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.12);
+  position:relative; z-index:1;      /* queda por encima del “sweep” del botón */
+}
+.wa-badge .wa-glyph{
+  width:15px; height:15px; fill:#0b0c10; /* o #fff si preferís blanco */
+}
+
+/* Si lo querés blanco sobre verde más oscuro: */
+/* .wa-badge{ background:#1fa855 }  .wa-badge .wa-glyph{ fill:#fff } */
+/* Flecha con micro-animación cada 3s */
+.back-arrow{
+  display:inline-block;
+  transform: translateX(0);
+  animation: nudge-left 3s ease-in-out infinite;
+  transition: transform .2s ease;
+}
+
+/* “descansa” la mayoría del tiempo; dos empujoncitos al inicio */
+@keyframes nudge-left{
+  0%, 70%, 100% { transform: translateX(0) }
+  10%           { transform: translateX(-4px) }
+  20%           { transform: translateX(0) }
+  30%           { transform: translateX(-2px) }
+  40%           { transform: translateX(0) }
+}
+
+/* Al pasar el mouse, pausa la animación y deja la flecha apenas corrida */
+.back-link:hover .back-arrow{ 
+  animation-play-state: paused;
+  transform: translateX(-3px);
+}
+
+/* Accesibilidad: si el usuario reduce movimiento, la dejamos quieta */
+@media (prefers-reduced-motion: reduce){
+  .back-arrow{ animation: none }
+}
+/* Subtítulo/encabezado de sección */
+section .section-kicker{ color:#34d399; font-weight:700; letter-spacing:.3px; }
+
+/* Afinado de tipografía de precios */
+.service-card .price{
+  display:flex; align-items:baseline; gap:.4rem; margin-top:.25rem;
+}
+.service-card .price .currency,
+.service-card .price .period{ opacity:.8; font-size:.95rem }
+
+/* Espaciado dentro de las cards de mantenimiento (opcional) */
+.service-card ul{ margin-top:.75rem }
+
+/* En pantallas chicas: que respiren un poco más */
+@media (max-width: 640px){
+  .service-card{ padding:16px }
+}
+/* ===== FAQ ===== */
+.faq-item{
+  --neon: 16,185,129; /* emerald */
+  position: relative;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  background: rgba(255,255,255,.04);
+  transition: border-color .25s ease, box-shadow .25s ease, background-color .25s ease;
+  overflow: hidden;
+}
+
+/* glow lateral cuando está abierta o en hover */
+.faq-item::before{
+  content:"";
+  position:absolute; inset:0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 0 rgba(var(--neon), .0);
+  transition: box-shadow .25s ease;
+}
+@media (hover:hover){
+  .faq-item:hover{ border-color: rgba(var(--neon), .45); background: rgba(255,255,255,.055); }
+  .faq-item:hover::before{ box-shadow: inset 0 0 0 2px rgba(var(--neon), .25); }
+}
+.faq-item[open]{
+  border-color: rgba(var(--neon), .55);
+  box-shadow:
+    0 0 0 1px rgba(var(--neon), .35),
+    0 8px 28px rgba(var(--neon), .18);
+}
+.faq-item[open]::before{ box-shadow: inset 0 0 0 2px rgba(var(--neon), .28); }
+
+/* summary */
+.faq-summary{
+  position: relative; z-index: 1;
+  list-style: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+.faq-summary::-webkit-details-marker{ display:none; }
+
+.faq-title{
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+/* caret */
+.faq-caret{
+  width: 22px; height: 22px;
+  color: #cbd5e1; /* slate-300 */
+  transition: transform .25s ease, color .25s ease;
+  flex: none;
+}
+.faq-item[open] .faq-caret{ transform: rotate(180deg); color: rgb(var(--neon)); }
+
+/* contenido con animación de altura (sin JS) */
+.faq-content{
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .28s ease, padding .28s ease, opacity .25s ease;
+  padding: 0 16px;
+  opacity: .9;
+}
+.faq-content > div{ overflow: hidden; }
+.faq-item[open] .faq-content{
+  grid-template-rows: 1fr;
+  padding: 0 16px 14px;
+  opacity: 1;
+}
+
+/* foco accesible */
+.faq-item:focus-within{
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(var(--neon), .45),
+    0 0 0 4px #0b0c10;
+}
+
+/* variante de color (si querés usar otros) */
+/* .faq-item--cyan{ --neon: 34,211,238 }   #22d3ee */
+/* .faq-item--violet{ --neon: 167,139,250 } #a78bfa */

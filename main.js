@@ -285,17 +285,32 @@ function initContactForm(){
   });
 }
 
+
 /* =======================
-   Splash de carga (cuadritos)
+   Splash de carga (cuadritos) con “fast mode”
 ======================= */
+const SPLASH_TTL_MS = 1000 * 60 * 60; // 1 hora (cambiá a 30 * 60 * 1000 si querés 30 min)
+
 async function initSplashLoader(){
   const splash = document.getElementById("splash");
 
-  // Si no hay splash, arrancamos de una
+  // Si no hay splash, seguimos normal
   if(!splash){
-    finalizeBoot();
+    finalizeBoot?.();
     return;
   }
+
+  // Si venimos del historial con bfcache, ocultar instantáneamente
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted) splash.classList.add("hide");
+  });
+
+  // ¿Ya se vio hace poco?
+  const lastSeen = Number(localStorage.getItem("splash_last_seen") || 0);
+  const recentlySeen = Date.now() - lastSeen < SPLASH_TTL_MS;
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fastMode = reduced || recentlySeen;   // usamos el modo rápido si reduce motion o lo vio hace poco
 
   document.body.classList.add("splashing");
 
@@ -307,36 +322,175 @@ async function initSplashLoader(){
   const boot      = document.getElementById("bootSplash");
   const title     = splash.querySelector(".term-title");
 
-  // Si faltan nodos del splash, lo cerramos y disparamos el hero
+  // Si faltan nodos, cerramos
   if(!cmdSpan || !status || !statusTxt || !cells){
     closeSplash();
-    finalizeBoot();
+    finalizeBoot?.();
     return;
   }
 
   buildCells(cells, 10);
 
+  // ======= MODO RÁPIDO (skip o micro-animación) =======
+  if (fastMode) {
+    cmdSpan.textContent = "npm run dev";
+    title?.classList.add("title-accent");
+    status.classList.remove("hide");
+    statusTxt.textContent = "Listo ✅";
+    setCells(cells, 100, pctEl);
+    await wait(220);              // micro-pausa para que no sea “teletransporte”
+    closeSplash();
+    finalizeBoot?.();
+    return;
+  }
+
+  // ======= MODO COMPLETO =======
   const firstCmd   = "npm install portfolio";
   const eraseCount = "install portfolio".length;
   const secondTail = "run dev";
   const statuses   = ["Instalando dependencias...", "Compilando...", "Listo ✅"];
 
   const speed = 60, eraseSpeed = 40;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if(reduced){
-    cmdSpan.textContent = firstCmd;
+  cmdSpan.textContent = "";
+  status.classList.add("hide");
+  statusTxt.textContent = statuses[0];
+  setCells(cells, 0, pctEl);
+  boot?.classList.remove("hide");
+
+  await typeText(cmdSpan, firstCmd, speed);
+  title?.classList.add("title-accent");
+  await wait(400);
+
+  status.classList.remove("hide");
+  statusTxt.textContent = statuses[0];
+  await animateCellsTo(cells, pctEl, 70, 1100);
+
+  statusTxt.textContent = statuses[1];
+  await animateCellsTo(cells, pctEl, 100, 800);
+
+  boot?.classList.add("hide");
+  await wait(250);
+
+  await eraseChars(cmdSpan, eraseCount, eraseSpeed);
+  await typeText(cmdSpan, secondTail, speed, { append:true });
+
+  statusTxt.textContent = statuses[2];
+  await wait(650);
+
+  closeSplash();
+  finalizeBoot?.();
+
+  function closeSplash(){
+    splash.classList.add("hide");
+    document.body.classList.remove("splashing");
+    // guardamos el momento para el próximo ingreso
+    localStorage.setItem("splash_last_seen", String(Date.now()));
+    // llevar a inicio del main (si querés conservarlo)
+    const firstSection = document.querySelector("main");
+    firstSection?.scrollIntoView({ behavior:"smooth", block:"start" });
+  }
+}
+
+
+
+
+/* =======================
+   Splash de carga con memoria
+======================= */
+/* =======================
+   Splash de carga con memoria (mini/fast/full)
+======================= */
+async function initSplashLoader(){
+  const splash = document.getElementById("splash");
+  if(!splash){ finalizeBoot(); return; }
+
+  // Ventanas de tiempo
+  const MINI_MS = 5 * 60 * 1000;    // <5 min: mini anim (~1 s)
+  const FAST_MS = 30 * 60 * 1000;   // <30 min: fast (~1.3 s)
+
+  const now  = Date.now();
+  const last = Number(localStorage.getItem("splashSeenAt") || 0);
+  const since = now - last;
+
+  let mode = "full";
+  if (since < MINI_MS)      mode = "mini";
+  else if (since < FAST_MS) mode = "fast";
+
+  // Si vino con back/forward del navegador, al menos fast
+  const nav = performance.getEntriesByType?.("navigation")?.[0];
+  if (nav && nav.type === "back_forward" && mode === "full") mode = "fast";
+
+  document.body.classList.add("splashing");
+
+  const cmdSpan   = document.getElementById("cmdSplash");
+  const status    = document.getElementById("statusSplash");
+  const statusTxt = document.getElementById("statusTextSplash");
+  const cells     = document.getElementById("cellsSplash");
+  const pctEl     = document.getElementById("pctSplash");
+  const boot      = document.getElementById("bootSplash");
+  const title     = splash.querySelector(".term-title");
+
+  if(!cmdSpan || !status || !statusTxt || !cells){
+    closeSplash(true); finalizeBoot(); return;
+  }
+
+  buildCells(cells, 10);
+
+  // Respeta reduce motion
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches){
     status.classList.remove("hide");
-    statusTxt.textContent = statuses[2];
+    statusTxt.textContent = "Listo ✅";
     title?.classList.add("title-accent");
     setCells(cells, 100, pctEl);
-    await wait(300);
+    await wait(250);
+    closeSplash(true);
+    finalizeBoot();
+    return;
+  }
+
+  // -------- MINI (~1.0–1.1 s) --------
+  if (mode === "mini"){
+    cmdSpan.textContent = "npm run dev";
+    title?.classList.add("title-accent");
+    status.classList.remove("hide");
+    statusTxt.textContent = "Cargando…";
+
+    setCells(cells, 0, pctEl);
+    await animateCellsTo(cells, pctEl, 60, 350); // 0→60 en 350ms
+    await animateCellsTo(cells, pctEl, 100, 450); // 60→100 en 450ms
+    statusTxt.textContent = "Listo ✅";
+    await wait(300);                               // respiro
     closeSplash();
     finalizeBoot();
     return;
   }
 
-  // Animación detallada
+  // -------- FAST (~1.3–1.5 s) --------
+  if (mode === "fast"){
+    // un poco más “vistoso” que mini
+    cmdSpan.textContent = "";
+    await typeText(cmdSpan, "npm run dev", 28);   // tipiado corto
+    title?.classList.add("title-accent");
+    status.classList.remove("hide");
+    statusTxt.textContent = "Cargando…";
+
+    setCells(cells, 0, pctEl);
+    await animateCellsTo(cells, pctEl, 100, 700); // 0→100 en 700ms
+    statusTxt.textContent = "Listo ✅";
+    await wait(350);
+    closeSplash();
+    finalizeBoot();
+    return;
+  }
+
+  // -------- FULL (igual al tuyo) --------
+  const firstCmd   = "npm install portfolio";
+  const eraseCount = "install portfolio".length;
+  const secondTail = "run dev";
+  const statuses   = ["Instalando dependencias...", "Compilando...", "Listo ✅"];
+  const speed = 60, eraseSpeed = 40;
+
   cmdSpan.textContent = "";
   status.classList.add("hide");
   statusTxt.textContent = statuses[0];
@@ -366,80 +520,16 @@ async function initSplashLoader(){
   closeSplash();
   finalizeBoot();
 
-  function closeSplash(){
+  function closeSplash(immediate=false){
+    localStorage.setItem("splashSeenAt", String(Date.now()));
     splash.classList.add("hide");
     document.body.classList.remove("splashing");
-    const firstSection = document.querySelector("main");
-    firstSection?.scrollIntoView({ behavior:"smooth", block:"start" });
+    if(!immediate){
+      document.querySelector("main")?.scrollIntoView({ behavior:"smooth", block:"start" });
+    }
   }
 }
 
-
-
-/* =======================
-   Terminal en el HERO (loop)
-======================= */
-function initConsoleAnimation(){
-  const term = document.querySelector(".hero .terminal.animated");
-  if(!term) return;
-
-  const cmdSpan   = term.querySelector("#cmd");
-  const status    = term.querySelector("#status");
-  const statusTxt = term.querySelector("#statusText");
-  const bar       = document.getElementById("bar");
-  const boot      = document.getElementById("boot");
-  const title     = term.querySelector(".term-title");            // ← FIX
-
-  if(!cmdSpan || !status || !statusTxt || !bar) return;
-
-  const firstCmd   = "npm install portfolio";
-  const eraseCount = "install portfolio".length;
-  const secondTail = "run build";
-  const statuses   = ["Instalando dependencias...", "Compilando...", "Listo ✅"];
-
-  const speed = 60, eraseSpeed = 40;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if(reduced){
-    cmdSpan.textContent = firstCmd;
-    status.classList.remove("hide");
-    statusTxt.textContent = statuses[0];
-    title?.classList.add("title-accent");                         // azul también en modo reducido
-    bar.style.width = "100%";
-    return;
-  }
-
-  async function cycle(){
-    title?.classList.remove("title-accent");                      // ← NUEVO (reinicio)
-    cmdSpan.textContent = "";
-    status.classList.add("hide");
-    statusTxt.textContent = statuses[0];
-    bar.style.width = "0%";
-    boot?.classList.remove("hide");
-
-    await typeText(cmdSpan, firstCmd, speed);
-    title?.classList.add("title-accent");                         // ← NUEVO (al terminar primer comando)
-    await wait(500);
-
-    status.classList.remove("hide");
-    statusTxt.textContent = statuses[0];
-    await animateProgressTo(bar, 70, 1200);
-
-    statusTxt.textContent = statuses[1];
-    await animateProgressTo(bar, 100, 900);
-
-    boot?.classList.add("hide");
-    await wait(300);
-
-    await eraseChars(cmdSpan, eraseCount, eraseSpeed);
-    await typeText(cmdSpan, secondTail, speed, { append:true });
-
-    statusTxt.textContent = statuses[2];
-    await wait(1200);
-    cycle();
-  }
-  cycle();
-}
 
 
 // ===== Estrellas en el hero (opcional) =====
