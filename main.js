@@ -487,3 +487,32 @@ document.addEventListener("DOMContentLoaded", () => {
     initConsoleAnimation?.();
   });
 });
+function initCertsDisclosure(){
+  const btn = document.querySelector('[data-open-cert]');
+  const details = document.getElementById('certsToggle');
+  if(!btn || !details) return;
+
+  // Al hacer clic en "Ver certificados": abrir y scrollear
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if(!details.open) details.open = true;
+    document.getElementById('certificados')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // actualizar hash (opcional)
+    history.replaceState(null, '', '#certificados');
+  });
+
+  // Si el usuario entra con #certificados en la URL, abrirlo
+  if(location.hash === '#certificados'){
+    details.open = true;
+    // aseguramos scroll correcto tras el load
+    setTimeout(() => {
+      document.getElementById('certificados')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }
+}
+
+// Llamalo en tu DOMContentLoaded existente:
+document.addEventListener('DOMContentLoaded', () => {
+  /* ...lo que ya tenés... */
+  initCertsDisclosure();
+});
