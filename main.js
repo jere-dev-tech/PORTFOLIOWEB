@@ -254,28 +254,57 @@ function initMobileMenu(){
    FORMULARIO (DEMO)
 ======================= */
 function initContactForm(){
-  const form = $("#contactForm");
-  const msg  = $("#formMsg");
+  const form = document.getElementById("contactForm");
+  const msg  = document.getElementById("formMsg");
   if(!form || !msg) return;
 
-  form.addEventListener("submit", async e => {
+  // ⚠️ PONÉ TU NÚMERO AQUÍ: con código de país y sin + ni 0, ni guiones
+  // Ej: Argentina (Catamarca) → 549XXXXXXXXXX (54 país + 9 móvil + número)
+  const WHATSAPP_NUMBER = "5493834991628";
+
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form));
-    if(!data.nombre || !data.email || !data.mensaje){
-      msg.textContent = "Completá todos los campos.";
+    const { nombre, email, mensaje } = data;
+
+    // Validación mínima
+    if(!nombre || !email || !mensaje){
+      msg.textContent = "Completá tu nombre, email y mensaje.";
       return;
     }
-    msg.textContent = "Enviando...";
 
-    try{
-      // await fetch("https://formspree.io/f/xxxxxxx", {...});
-      await new Promise(r => setTimeout(r, 900));
-      msg.textContent = "¡Gracias! Te respondo pronto.";
-      form.reset();
-    }catch(err){
-      console.error(err);
-      msg.textContent = "Ups, hubo un error. Probá otra vez o escribime a tu-email@dominio.com";
-    }
+    // Armamos el texto
+    const text =
+`¡Hola Jeremías! 👋
+Quiero contarte mi idea:
+
+• Nombre: ${nombre}
+• Email: ${email}
+
+Mensaje:
+${mensaje}
+
+(Enviado desde tu portfolio)`;
+
+    // Encode para URL
+    const encoded = encodeURIComponent(text);
+    const waURL   = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+
+    // Intento abrir WhatsApp en nueva pestaña
+    const win = window.open(waURL, "_blank", "noopener");
+    msg.textContent = "Abriendo WhatsApp…";
+
+    // Fallback: si el popup bloquea o no se abrió, ofrecemos email
+    setTimeout(() => {
+      if (!win || win.closed || typeof win.closed === "undefined") {
+        const mailto = `mailto:tu-email@dominio.com?subject=${encodeURIComponent("Nuevo contacto desde el portfolio")}&body=${encoded}`;
+        window.location.href = mailto;
+        msg.textContent = "Si no tenés WhatsApp, se abrirá tu email.";
+      }
+    }, 400);
+
+    // Limpio el form
+    form.reset();
   });
 }
 
