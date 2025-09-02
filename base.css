@@ -1038,3 +1038,6 @@ details[open] .certs-summary .chev { transform: rotate(180deg); }
 @media (max-width: 680px){
   .cert-grid { grid-template-columns: 1fr; }
 }
+section {
+  scroll-margin-top: 80px; /* ajustá según la altura de tu header */
+}
