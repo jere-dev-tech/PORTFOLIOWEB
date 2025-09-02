@@ -15,11 +15,10 @@ const CONFIG = {
   projects: [
     {
       title: "Tentazione — Alfajores artesanales",
-      desc: "Landing page con catálogo simple, formulario y mapa.",
-      link: "#",
-      repo: "#",
-      tags: ["HTML", "CSS", "JS"],
-      cover: ""
+      desc: "Sitio multipágina con catálogo, formulario de pedidos, WhatsApp y mapa. UI con Tailwind y slider en JS.",
+      link: "https://jere-dev-tech.github.io/tentazione-web/",
+      tags: ["HTML", "CSS", "Tailwind", "JavaScript"],
+      cover: "./imagenes/Tentazionelog.png"
     },
     {
       title: "Mini API con Node.js",
@@ -121,58 +120,18 @@ function animateCellsTo(container, pctEl, targetPct, duration=1000){
     requestAnimationFrame(step);
   });
 }
+
 function startHeroAnimation(){
   const player = document.getElementById("heroAnim");
   if (!player) return;
   try {
-    // nos aseguramos de estar al inicio y pausado antes de mostrar
     player.stop?.();
     player.seek?.(0);
     player.pause?.();
   } catch (e) { /* noop */ }
-  // mostrar y reproducir
   player.classList.add("is-playing");
   player.play?.();
 }
-
-/* =======================
-   INICIALIZACIÓN
-======================= */
-document.addEventListener("DOMContentLoaded", () => {
-  const y = $("#year");
-  if (y) y.textContent = new Date().getFullYear();
-
-  const gh = $("#githubLink");
-  if (gh) {
-    if (CONFIG.github && CONFIG.github !== "#") {
-      gh.href = CONFIG.github;
-      gh.setAttribute("rel", "noopener noreferrer");
-    } else {
-      gh.remove();
-    }
-  }
-
-  renderChips("#stackChips", CONFIG.stack);
-  renderChips("#skillsChips", CONFIG.skills);
-  renderProjects("#projectsGrid", CONFIG.projects);
-
-  $$('a[href^="#"]').forEach(a => {
-    a.addEventListener("click", e => {
-      const id = a.getAttribute("href").slice(1);
-      const el = document.getElementById(id);
-      if (el) { e.preventDefault(); el.scrollIntoView({ behavior:"smooth", block:"start" }); }
-    });
-  });
-
-  initThemeToggle();
-  initMobileMenu();
-  initContactForm();
-
-  initSplashLoader().then(() => {
-    // si agregás una terminal en el hero, se animará en loop
-    initConsoleAnimation();
-  });
-});
 
 /* =======================
    RENDERIZADOS
@@ -224,36 +183,72 @@ function renderProjects(containerSel, items){
 }
 
 /* =======================
-   TEMA
+   TEMA (matrix/cyberpunk/oceanic)
 ======================= */
 function initThemeToggle(){
-  const btn = $("#themeBtn");
-  const stored = localStorage.getItem("theme");
-  if (stored) document.documentElement.classList.toggle("light", stored === "light");
-  btn?.addEventListener("click", () => {
-    document.documentElement.classList.toggle("light");
-    const isLight = document.documentElement.classList.contains("light");
-    localStorage.setItem("theme", isLight ? "light" : "dark");
+  const buttons = document.querySelectorAll('.icon-btn[data-theme]');
+  const allThemes = ['matrix','cyberpunk','oceanic'];
+  let current = localStorage.getItem('theme') || 'matrix';
+
+  applyTheme(current);
+  reflectActive(current);
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const t = btn.dataset.theme;
+      if(!t || t === current) return;
+      current = t;
+      applyTheme(current);
+      reflectActive(current);
+    });
   });
+
+  function applyTheme(t){
+    document.documentElement.classList.remove(...allThemes);
+    document.documentElement.classList.add(t);
+    localStorage.setItem('theme', t);
+  }
+  function reflectActive(t){
+    buttons.forEach(b => b.dataset.active = String(b.dataset.theme === t));
+  }
 }
+
+
 
 /* =======================
-   MENÚ MÓVIL
+   MENÚ MÓVIL (☰ → ✕ con 3 spans)
 ======================= */
 function initMobileMenu(){
-  const btn = $("#menuBtn");
-  const list = $("#menuList");
+  const btn = document.getElementById("menuBtn");
+  const list = document.getElementById("menuList");
   if(!btn || !list) return;
 
-  btn.addEventListener("click", () => {
+  // toggle normal (abre/cierra)
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation(); // que no se dispare el click global
     const expanded = btn.getAttribute("aria-expanded") === "true";
     btn.setAttribute("aria-expanded", String(!expanded));
+    btn.classList.toggle("open", !expanded);
   });
 
+  // cerrar al hacer clic en un link del menú
   list.querySelectorAll("a").forEach(a => {
-    a.addEventListener("click", () => btn.setAttribute("aria-expanded", "false"));
+    a.addEventListener("click", () => {
+      btn.setAttribute("aria-expanded", "false");
+      btn.classList.remove("open");
+    });
+  });
+
+  // cerrar al hacer clic fuera
+  document.addEventListener("click", (e) => {
+    const clickInside = btn.contains(e.target) || list.contains(e.target);
+    if (!clickInside) {
+      btn.setAttribute("aria-expanded", "false");
+      btn.classList.remove("open");
+    }
   });
 }
+
 
 /* =======================
    FORMULARIO (DEMO)
@@ -277,7 +272,6 @@ function initContactForm(){
       await new Promise(r => setTimeout(r, 900));
       msg.textContent = "¡Gracias! Te respondo pronto.";
       form.reset();
-      // await fetch("http://localhost:3000/contact", {...});
     }catch(err){
       console.error(err);
       msg.textContent = "Ups, hubo un error. Probá otra vez o escribime a tu-email@dominio.com";
@@ -285,129 +279,16 @@ function initContactForm(){
   });
 }
 
-
-/* =======================
-   Splash de carga (cuadritos) con “fast mode”
-======================= */
-const SPLASH_TTL_MS = 1000 * 60 * 60; // 1 hora (cambiá a 30 * 60 * 1000 si querés 30 min)
-
-async function initSplashLoader(){
-  const splash = document.getElementById("splash");
-
-  // Si no hay splash, seguimos normal
-  if(!splash){
-    finalizeBoot?.();
-    return;
-  }
-
-  // Si venimos del historial con bfcache, ocultar instantáneamente
-  window.addEventListener("pageshow", (e) => {
-    if (e.persisted) splash.classList.add("hide");
-  });
-
-  // ¿Ya se vio hace poco?
-  const lastSeen = Number(localStorage.getItem("splash_last_seen") || 0);
-  const recentlySeen = Date.now() - lastSeen < SPLASH_TTL_MS;
-
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const fastMode = reduced || recentlySeen;   // usamos el modo rápido si reduce motion o lo vio hace poco
-
-  document.body.classList.add("splashing");
-
-  const cmdSpan   = document.getElementById("cmdSplash");
-  const status    = document.getElementById("statusSplash");
-  const statusTxt = document.getElementById("statusTextSplash");
-  const cells     = document.getElementById("cellsSplash");
-  const pctEl     = document.getElementById("pctSplash");
-  const boot      = document.getElementById("bootSplash");
-  const title     = splash.querySelector(".term-title");
-
-  // Si faltan nodos, cerramos
-  if(!cmdSpan || !status || !statusTxt || !cells){
-    closeSplash();
-    finalizeBoot?.();
-    return;
-  }
-
-  buildCells(cells, 10);
-
-  // ======= MODO RÁPIDO (skip o micro-animación) =======
-  if (fastMode) {
-    cmdSpan.textContent = "npm run dev";
-    title?.classList.add("title-accent");
-    status.classList.remove("hide");
-    statusTxt.textContent = "Listo ✅";
-    setCells(cells, 100, pctEl);
-    await wait(220);              // micro-pausa para que no sea “teletransporte”
-    closeSplash();
-    finalizeBoot?.();
-    return;
-  }
-
-  // ======= MODO COMPLETO =======
-  const firstCmd   = "npm install portfolio";
-  const eraseCount = "install portfolio".length;
-  const secondTail = "run dev";
-  const statuses   = ["Instalando dependencias...", "Compilando...", "Listo ✅"];
-
-  const speed = 60, eraseSpeed = 40;
-
-  cmdSpan.textContent = "";
-  status.classList.add("hide");
-  statusTxt.textContent = statuses[0];
-  setCells(cells, 0, pctEl);
-  boot?.classList.remove("hide");
-
-  await typeText(cmdSpan, firstCmd, speed);
-  title?.classList.add("title-accent");
-  await wait(400);
-
-  status.classList.remove("hide");
-  statusTxt.textContent = statuses[0];
-  await animateCellsTo(cells, pctEl, 70, 1100);
-
-  statusTxt.textContent = statuses[1];
-  await animateCellsTo(cells, pctEl, 100, 800);
-
-  boot?.classList.add("hide");
-  await wait(250);
-
-  await eraseChars(cmdSpan, eraseCount, eraseSpeed);
-  await typeText(cmdSpan, secondTail, speed, { append:true });
-
-  statusTxt.textContent = statuses[2];
-  await wait(650);
-
-  closeSplash();
-  finalizeBoot?.();
-
-  function closeSplash(){
-    splash.classList.add("hide");
-    document.body.classList.remove("splashing");
-    // guardamos el momento para el próximo ingreso
-    localStorage.setItem("splash_last_seen", String(Date.now()));
-    // llevar a inicio del main (si querés conservarlo)
-    const firstSection = document.querySelector("main");
-    firstSection?.scrollIntoView({ behavior:"smooth", block:"start" });
-  }
-}
-
-
-
-
-/* =======================
-   Splash de carga con memoria
-======================= */
 /* =======================
    Splash de carga con memoria (mini/fast/full)
+   (ÚNICA versión)
 ======================= */
 async function initSplashLoader(){
   const splash = document.getElementById("splash");
   if(!splash){ finalizeBoot(); return; }
 
-  // Ventanas de tiempo
-  const MINI_MS = 5 * 60 * 1000;    // <5 min: mini anim (~1 s)
-  const FAST_MS = 30 * 60 * 1000;   // <30 min: fast (~1.3 s)
+  const MINI_MS = 5 * 60 * 1000;     // <5 min: mini
+  const FAST_MS = 30 * 60 * 1000;    // <30 min: fast
 
   const now  = Date.now();
   const last = Number(localStorage.getItem("splashSeenAt") || 0);
@@ -417,7 +298,6 @@ async function initSplashLoader(){
   if (since < MINI_MS)      mode = "mini";
   else if (since < FAST_MS) mode = "fast";
 
-  // Si vino con back/forward del navegador, al menos fast
   const nav = performance.getEntriesByType?.("navigation")?.[0];
   if (nav && nav.type === "back_forward" && mode === "full") mode = "fast";
 
@@ -437,7 +317,7 @@ async function initSplashLoader(){
 
   buildCells(cells, 10);
 
-  // Respeta reduce motion
+  // reduce motion
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches){
     status.classList.remove("hide");
     statusTxt.textContent = "Listo ✅";
@@ -449,34 +329,31 @@ async function initSplashLoader(){
     return;
   }
 
-  // -------- MINI (~1.0–1.1 s) --------
+  // MINI
   if (mode === "mini"){
     cmdSpan.textContent = "npm run dev";
     title?.classList.add("title-accent");
     status.classList.remove("hide");
     statusTxt.textContent = "Cargando…";
-
     setCells(cells, 0, pctEl);
-    await animateCellsTo(cells, pctEl, 60, 350); // 0→60 en 350ms
-    await animateCellsTo(cells, pctEl, 100, 450); // 60→100 en 450ms
+    await animateCellsTo(cells, pctEl, 60, 350);
+    await animateCellsTo(cells, pctEl, 100, 450);
     statusTxt.textContent = "Listo ✅";
-    await wait(300);                               // respiro
+    await wait(300);
     closeSplash();
     finalizeBoot();
     return;
   }
 
-  // -------- FAST (~1.3–1.5 s) --------
+  // FAST
   if (mode === "fast"){
-    // un poco más “vistoso” que mini
     cmdSpan.textContent = "";
-    await typeText(cmdSpan, "npm run dev", 28);   // tipiado corto
+    await typeText(cmdSpan, "npm run dev", 28);
     title?.classList.add("title-accent");
     status.classList.remove("hide");
     statusTxt.textContent = "Cargando…";
-
     setCells(cells, 0, pctEl);
-    await animateCellsTo(cells, pctEl, 100, 700); // 0→100 en 700ms
+    await animateCellsTo(cells, pctEl, 100, 700);
     statusTxt.textContent = "Listo ✅";
     await wait(350);
     closeSplash();
@@ -484,7 +361,7 @@ async function initSplashLoader(){
     return;
   }
 
-  // -------- FULL (igual al tuyo) --------
+  // FULL
   const firstCmd   = "npm install portfolio";
   const eraseCount = "install portfolio".length;
   const secondTail = "run dev";
@@ -530,21 +407,19 @@ async function initSplashLoader(){
   }
 }
 
-
-
-// ===== Estrellas en el hero (opcional) =====
+/* =======================
+   Estrellas del hero (opcional)
+======================= */
 function initHeroStars(n = 60){
   const layer = document.querySelector(".hero.hero-neon .hero-stars");
   if(!layer) return;
-  const rect = layer.getBoundingClientRect();
   const frag = document.createDocumentFragment();
-
   for(let i=0;i<n;i++){
     const s = document.createElement("span");
     s.className = "star";
-    const x = Math.random()*100;          // %
-    const y = Math.random()*100;          // %
-    const d = 1 + Math.random()*2;        // tamaño 1–3px
+    const x = Math.random()*100;
+    const y = Math.random()*100;
+    const d = 1 + Math.random()*2;
     const delay = (Math.random()*2).toFixed(2);
     s.style.left = x + "%";
     s.style.top  = y + "%";
@@ -556,27 +431,59 @@ function initHeroStars(n = 60){
   layer.appendChild(frag);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  initHeroStars(70); // cantidad de estrellas
-});
+/* =======================
+   Badge y finalización
+======================= */
 function startBadgeHand(){
   const badge = document.getElementById("heroBadge");
   if (!badge) return;
-
-  // Respeta reduce motion
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced) return;
-
-  // Reinicio por si recargás durante diseño
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   badge.classList.remove("play");
-  // Forzar reflow para reiniciar los keyframes del CSS
-  void badge.offsetWidth;
-  // ¡A jugar!
+  void badge.offsetWidth; // reflow
   badge.classList.add("play");
 }
+
 function finalizeBoot(){
-  // Lottie del programador
   startHeroAnimation?.();
-  // Mano ✌🏽 del badge
   startBadgeHand?.();
 }
+
+/* =======================
+   BOOT
+======================= */
+document.addEventListener("DOMContentLoaded", () => {
+  const y = $("#year");
+  if (y) y.textContent = new Date().getFullYear();
+
+  const gh = $("#githubLink");
+  if (gh) {
+    if (CONFIG.github && CONFIG.github !== "#") {
+      gh.href = CONFIG.github;
+      gh.setAttribute("rel", "noopener noreferrer");
+    } else {
+      gh.remove();
+    }
+  }
+
+  renderChips("#stackChips", CONFIG.stack);
+  renderChips("#skillsChips", CONFIG.skills);
+  renderProjects("#projectsGrid", CONFIG.projects);
+
+  $$('a[href^="#"]').forEach(a => {
+    a.addEventListener("click", e => {
+      const id = a.getAttribute("href").slice(1);
+      const el = document.getElementById(id);
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior:"smooth", block:"start" }); }
+    });
+  });
+
+  initThemeToggle();
+  initMobileMenu();
+  initContactForm();
+  initHeroStars(70);
+
+  initSplashLoader().then(() => {
+    // si agregás una terminal en el hero, se animará en loop
+    initConsoleAnimation?.();
+  });
+});

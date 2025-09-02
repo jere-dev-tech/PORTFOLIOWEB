@@ -55,24 +55,36 @@
 
 <header class="site matrix">
   <nav aria-label="Principal">
-    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menuList">☰</button>
+    <button class="menu-btn" id="menuBtn"
+        aria-expanded="false" aria-controls="menuList" aria-label="Abrir menú">
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="sr-only">Menú</span>
+    </button>
+
     <ul id="menuList">
       <li><a href="#proyectos">Proyectos</a></li>
       <li><a href="servicios.html">Servicios</a></li>
-
       <li><a href="#skills">Skills</a></li>
       <li><a href="#sobre-mi">Sobre mí</a></li>
       <li><a href="#contacto">Contacto</a></li>
-      
     </ul>
   </nav>
-  <button id="themeBtn" class="btn" aria-label="Cambiar tema">
-    🌓 <span class="hide sm-inline">Tema</span>
-  </button>
+
+  <!-- Switch de temas -->
+<div class="theme-switch" aria-label="Cambiar tema">
+  <button class="icon-btn" data-theme="matrix" aria-label="Tema Matrix" title="Matrix">▦</button>
+  <button class="icon-btn" data-theme="cyberpunk" aria-label="Tema Cyberpunk" title="Cyberpunk">⚡</button>
+  <button class="icon-btn" data-theme="oceanic" aria-label="Tema Oceanic" title="Oceanic">🌊</button>
+</div>
+
 </header>
 
 
-  <main>
+
+
+  <main class="post-hero-bg">
     
 <!-- HERO -->
 <section class="hero hero-neon">

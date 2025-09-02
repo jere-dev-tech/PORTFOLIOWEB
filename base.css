@@ -27,13 +27,147 @@
   --font-body:  "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-html.light{
-  --bg:#f7f7fb;
-  --surface:#ffffff;
-  --text:#111217;
-  --muted:#5b5f6a;
-  --border:#e8e8ee;
+
+.icon-btn{
+  width: 40px; height: 40px;
+  display: inline-grid; place-items:center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background .2s ease;
 }
+.icon-btn:hover{ transform: translateY(-1px); box-shadow: var(--shadow); }
+.icon-btn[data-active="true"]{
+  outline: 1.5px solid color-mix(in oklab, var(--accent) 70%, transparent);
+  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 40%, transparent);
+}
+
+/* ====== Temas (por clases en <html>) ====== */
+/* Default (matrix): ya usás tu paleta actual en :root. 
+   Si querés que matrix sea explícito, podés duplicar esas vars dentro de html.matrix {} */
+
+/* --- CYBERPUNK --- */
+html.cyberpunk{
+  --bg:#0a0012;
+  --surface:#130018;
+  --text:#ffeefc;
+  --muted:#b78fb5;
+  --primary:#ff00e6;     /* magenta neón */
+  --accent:#00f0ff;      /* cian neón */
+  --border:#2a0531;
+
+  /* Reaprovechamos tus nombres “matrix” para el header neón */
+  --matrix:#ff00e6;
+  --matrix-dark:#140016;
+  --matrix-glow:rgba(255,0,230,.55);
+
+  --title-accent:#00f0ff;
+}
+
+html.cyberpunk header.site.matrix{
+  background:
+    radial-gradient(55% 120% at 50% 0, rgba(255,0,230,.12), transparent 70%),
+    linear-gradient(180deg, #18001e 0%, #0b0010 100%);
+  border-bottom:1px solid color-mix(in oklab, var(--matrix) 55%, var(--border));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.02),
+    0 10px 30px rgba(255,0,230,.16);
+}
+html.cyberpunk header.site.matrix::after{
+  background: linear-gradient(90deg, transparent, var(--matrix), var(--accent), transparent);
+}
+
+/* Links del nav con brillo magenta/cian */
+html.cyberpunk header.site.matrix nav a{
+  color: color-mix(in oklab, var(--matrix) 55%, var(--text));
+}
+html.cyberpunk header.site.matrix nav a:hover,
+html.cyberpunk header.site.matrix nav a:focus-visible{
+  background: #140016;
+  color: #fff0fd;
+  border-color: color-mix(in oklab, var(--matrix) 60%, var(--border));
+  text-shadow: 0 0 8px var(--matrix-glow), 0 0 6px rgba(0,240,255,.35);
+}
+
+/* ===== Botonera de temas (si no la tenías ya) ===== */
+.theme-switch{
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex; gap: 8px;
+  z-index: 4;
+}
+.icon-btn{
+  width: 40px; height: 40px;
+  display: inline-grid; place-items:center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background .2s ease;
+}
+.icon-btn:hover{ transform: translateY(-1px); box-shadow: var(--shadow); }
+.icon-btn[data-active="true"]{
+  outline: 1.5px solid color-mix(in oklab, var(--accent) 70%, transparent);
+  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 40%, transparent);
+}
+@media (max-width:640px){
+  .theme-switch{
+    right: 12px;
+    top: calc(var(--bar-h,56px)/2);
+    transform: translateY(-50%);
+  }
+}
+
+/* ======== OCEANIC NEON ======== */
+html.oceanic{
+  --bg:#00121d;
+  --surface:#001a26;
+  --text:#e4faff;
+  --muted:#7eb5c9;
+  --primary:#00d9ff;   /* aqua neón */
+  --accent:#6a5cff;    /* violeta eléctrico */
+  --border:#003344;
+
+  /* Reutilizo tus nombres “matrix” para el header */
+  --matrix:#00d9ff;
+  --matrix-dark:#00141e;
+  --matrix-glow:rgba(0,217,255,.55);
+
+  --title-accent:#6a5cff;
+}
+
+/* Header en Oceanic */
+html.oceanic header.site.matrix{
+  background:
+    radial-gradient(55% 120% at 50% 0, rgba(0,217,255,.12), transparent 70%),
+    linear-gradient(180deg, #002133 0%, #00131d 100%);
+  border-bottom: 1px solid color-mix(in oklab, var(--matrix) 55%, var(--border));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.02),
+    0 10px 30px rgba(0,217,255,.16);
+}
+html.oceanic header.site.matrix::after{
+  background: linear-gradient(90deg, transparent, var(--matrix), var(--accent), transparent);
+}
+html.oceanic header.site.matrix nav a{
+  color: color-mix(in oklab, var(--matrix) 45%, var(--text));
+}
+html.oceanic header.site.matrix nav a:hover,
+html.oceanic header.site.matrix nav a:focus-visible{
+  background: var(--matrix-dark);
+  color: #e9fbff;
+  border-color: color-mix(in oklab, var(--matrix) 60%, var(--border));
+  text-shadow: 0 0 8px var(--matrix-glow), 0 0 6px rgba(106,92,255,.35);
+}
+
+/* Tu dropdown móvil toma el nuevo --surface translúcido automáticamente.
+   Si lo querés más “vidrio”, podés subir el blur o bajar opacidad. */
+
+
 
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -68,7 +202,48 @@ header.site{
 nav ul{ display:flex; gap:14px; list-style:none; padding:0; margin:0 }
 nav a{ padding:8px 12px; border-radius:10px; color:var(--muted) }
 nav a:hover{ background:var(--surface); color:var(--text); box-shadow:var(--shadow) }
-.menu-btn{ display:none }
+/* Botón hamburguesa */
+.menu-btn{
+  display:inline-flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  width:40px; height:40px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--surface);
+  cursor:pointer;
+  transition:background .25s ease, transform .2s ease;
+}
+.menu-btn:hover{ transform:translateY(-1px) }
+.menu-btn:active{ transform:translateY(0) scale(.98) }
+
+/* Líneas */
+.menu-btn .line{
+  width:22px; height:2px;
+  background:var(--text);
+  border-radius:2px;
+  transition:transform .25s ease, opacity .2s ease, width .25s ease;
+  transform-origin:center;
+}
+
+/* Estado abierto → “X” */
+.menu-btn.open .line:nth-child(1){
+  transform:rotate(45deg) translate(4px, 5px);
+}
+.menu-btn.open .line:nth-child(2){
+  opacity:0; width:0;
+}
+.menu-btn.open .line:nth-child(3){
+  transform:rotate(-45deg) translate(4px, -5px);
+}
+
+/* Respeta reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .menu-btn .line{ transition:none }
+}
+
 
 /* ========= BUTTONS ========= */
 .btn{
@@ -245,14 +420,7 @@ footer{ padding:32px 0; color:var(--muted); border-top:1px solid var(--border) }
     border:1px solid var(--border); background:var(--surface); color:var(--text);
     padding:8px 12px; border-radius:10px;
   }
-  .menu-btn[aria-expanded="true"] + ul{
-    display:flex; position:absolute; right:12px; top:56px; z-index:60;
-    flex-direction:column; gap:0; background:var(--surface);
-    border:1px solid var(--border); border-radius:12px; overflow:hidden;
-  }
-  .menu-btn[aria-expanded="true"] + ul li a{ display:block; padding:12px 16px }
-  .grid{ grid-template-columns:1fr }
-  .row{ grid-template-columns:1fr }
+ 
 }
 
 /* Accesibilidad: menos animación */
@@ -374,42 +542,66 @@ header.site.matrix .menu-btn{
   display: none; /* desktop */
 }
 
-/* ===== Mobile: hamburguesa junto a la luna, dropdown desde ahí ===== */
+/* ===== Mobile: barra fija arriba + dropdown que empuja ===== */
 @media (max-width:640px){
-  /* espacio entre hamburguesa y la luna */
-  header.site.matrix{ --gap-right: 70px; } /* ajusta 50–64px según tu botón */
+  :root{ --bar-h:56px;
+   --bar-h: 56px;   /* ya lo usás para la barra */
+    --btn-w: 44px;   /* ancho/alto de los botones */
+    --gap-x: 12px;   /* separación lateral */ }               /* alto de la barra superior */
 
-  /* mostrar hamburguesa y moverla a la derecha */
-  header.site.matrix .menu-btn{
-    display: inline-flex;
-    left: auto;                 /* anula el 'left' de desktop */
-    right: var(--gap-right);    /* queda a la izquierda de la luna */
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
+  /* La barra (nav) mantiene altura fija */
+  header.site.matrix nav{
+    position: relative;
+    height: var(--bar-h);
+    padding: 0;                         /* sin padding vertical extra */
   }
 
-  /* el UL centrado no se usa en móvil por defecto */
+  /* El UL no es absolute; aparece debajo de la barra */
   header.site.matrix nav ul{
     display: none;
-    left: auto; top: auto; transform: none;
+    position: static;                   /* clave: no absolute */
+    transform: none;
+    left: auto; top: auto;
   }
 
-  /* dropdown colgando desde la hamburguesa */
-  header.site.matrix .menu-btn[aria-expanded="true"] + ul{
-    display: flex;
-    position: absolute;
-    right: var(--gap-right);
-    top: 56px;
-    flex-direction: column; gap: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px; overflow: hidden;
-    z-index: 3;
-  }
+  /* Abierto: panel debajo de la barra */
+header.site.matrix .menu-btn[aria-expanded="true"] + ul{
+  padding: 8px calc(var(--btn-w) + var(--gap-x)) 12px calc(var(--btn-w) + var(--gap-x));
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 8px;
+  
+  /* 👇 Fondo translúcido estilo “vidrio” */
+  background: rgba(17, 20, 25, 0.9); /* tu --surface con 80% opacidad */
+  backdrop-filter: blur(4px) saturate(1.2);
+  -webkit-backdrop-filter: blur(8px) saturate(1.2);
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
   header.site.matrix .menu-btn[aria-expanded="true"] + ul li a{
-    display: block; padding: 12px 16px;
+    display: block; padding: 14px 16px;
   }
+
+  /* === Botones alineados a la barra (no a todo el header) === */
+  header.site.matrix .menu-btn,
+  #themeBtn{
+    position: absolute;
+    top: calc((var(--bar-h) - 40px) / 2);  /* centrados verticalmente en 56px */
+    transform: none;                       /* ¡importante! quita el 50% */
+    height: 40px;                          /* alto consistente del botón */
+    display: inline-flex; align-items: center; justify-content: center;
+    z-index: 4;                             /* por encima de la línea verde */
+     width: var(--btn-w);
+    height: var(--btn-w);
+  }
+
+  /* Ubicaciones laterales */
+  header.site.matrix .menu-btn{ left: 12px; }
+  #themeBtn{ right: 12px; }
 }
 
 
@@ -659,4 +851,112 @@ html, body { overflow-x: hidden; }
   backdrop-filter: blur(3px) saturate(1.1);
   -webkit-backdrop-filter: blur(3px) saturate(1.1);
   text-shadow: 0 1px 0 rgba(0,0,0,.35); /* un pelín de contraste */
+}
+/* Fondo suave para todo lo que viene después del hero */
+.post-hero-bg{
+  position: relative;
+  z-index: 0; /* el contenido queda arriba del fondo */
+}
+
+/* Capa con glow + grilla tenue */
+.post-hero-bg::before{
+  content:"";
+  position:absolute; inset:0;
+  pointer-events:none; z-index:-1;
+
+  /* Ajustes rápidos */
+  --grid-gap: 90px;                 /* separación entre líneas */
+  --grid-alpha: .06;                /* opacidad de la grilla */
+  --glow-top:  .10;                 /* intensidad glow arriba */
+  --glow-bot:  .06;                 /* intensidad glow abajo */
+
+  background:
+    /* brillo arriba y abajo para continuidad con el hero */
+    radial-gradient(1100px 260px at 50% 0,
+      color-mix(in oklab, var(--matrix) calc(var(--glow-top)*100%), transparent),
+      transparent 65%),
+    radial-gradient(1200px 300px at 50% 100%,
+      color-mix(in oklab, var(--matrix) calc(var(--glow-bot)*100%), transparent),
+      transparent 70%),
+
+    /* grilla MUY suave (horizontal + vertical) */
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in oklab, var(--matrix) calc(var(--grid-alpha)*100%), transparent) 0 1px,
+      transparent 1px var(--grid-gap)
+    ),
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--matrix) calc(var(--grid-alpha)*100%), transparent) 0 1px,
+      transparent 1px var(--grid-gap)
+    ),
+
+    /* base del sitio */
+    var(--bg);
+}
+
+/* Línea “divisor” luminosa arriba de cada sección (opcional) */
+main section{
+  position: relative;
+}
+main section::before{
+  content:"";
+  position:absolute; left:0; right:0; top:0; height:1px;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--matrix) 35%, transparent), transparent);
+  opacity:.35;
+}
+.project-cover {
+  height: 200px;                  /* o el alto que uses */
+  background: #000 center no-repeat;
+  background-size: contain !important; /* ajuste del logo */
+  border-radius: 12px;             /* igual al card */
+}
+.project-cover {
+  height: 200px; 
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-cover img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+/* Hamburguesa con 3 líneas */
+.menu-btn {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.menu-btn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.35s ease;
+}
+
+/* Animación cuando está abierto */
+.menu-btn.open span:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 5px);
+}
+.menu-btn.open span:nth-child(2) {
+  opacity: 0;
+}
+.menu-btn.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(4px, -5px);
 }
