@@ -8,9 +8,9 @@ const CONFIG = {
     "Maquetación semántica",
     "Flexbox y Grid",
     "Fetch API",
-    "Express (básico)",
-    "EJS/Plantillas (básico)",
-    "REST (básico)",
+    "Express ",
+    "EJS/Plantillas ",
+    "REST ",
   ],
   projects: [
     {
