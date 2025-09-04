@@ -144,7 +144,7 @@
           <lottie-player
             id="heroAnim"
             class="hero-illus"
-            src="imagenes/Coding.json"
+            src="assets/Coding.json"
             background="transparent"
             speed="1"
             loop
@@ -202,45 +202,78 @@
       </div>
     </section>
 
-    <!-- SKILLS -->
-    <section id="skills">
-      <div class="container">
-        <div class="section-head">
-          <h2>Skills</h2>
-          <p class="muted">Tecnologías que uso y estoy aprendiendo</p>
-        </div>
+ <!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-head">
+      <h2>Skills</h2>
+      <p class="muted">Stack tecnológico y habilidades</p>
+    </div>
 
-        <div class="stack" id="skillsChips">
-          <h3>Frontend</h3>
-          <span class="chip">HTML5</span>
-          <span class="chip">CSS3</span>
-          <span class="chip">Flexbox</span>
-          <span class="chip">Responsive Design</span>
-          <span class="chip">Tailwind CSS</span>
+    <div class="stack" id="skillsChips">
+      <!-- Frontend -->
+      <h3>Frontend</h3>
+      <span class="chip">HTML5</span>
+      <span class="chip">CSS3</span>
+      <span class="chip">Flexbox</span>
+      <span class="chip">CSS Grid</span>
+      <span class="chip">Responsive Design</span>
+      <span class="chip">Mobile First</span>
+      <span class="chip">Accesibilidad</span>
+      <span class="chip">Formularios</span>
+      <span class="chip">Tailwind CSS</span>
 
-          <h3>JavaScript</h3>
-          <span class="chip">ES6+</span>
-          <span class="chip">DOM</span>
-          <span class="chip">Eventos</span>
-          <span class="chip">Promesas</span>
-          <span class="chip">POO</span>
+      <!-- JavaScript -->
+      <h3>JavaScript</h3>
+      <span class="chip">ES6+</span>
+      <span class="chip">DOM</span>
+      <span class="chip">Eventos</span>
+      <span class="chip">Promesas</span>
+      <span class="chip">Async/Await</span>
+      <span class="chip">Manejo de Errores</span>
+      <span class="chip">POO</span>
+      <span class="chip">Clases & Prototipos</span>
 
-          <h3>Backend</h3>
-          <span class="chip">Node.js</span>
-          <span class="chip">Express.js</span>
-          <span class="chip">MongoDB</span>
-          <span class="chip">Mongoose</span>
-          <span class="chip">APIs</span>
-          <span class="chip">CRUD</span>
+      <!-- Backend -->
+      <h3>Backend</h3>
+      <span class="chip">Node.js</span>
+      <span class="chip">NPM</span>
+      <span class="chip">Express.js</span>
+      <span class="chip">MongoDB</span>
+      <span class="chip">Mongoose</span>
+      <span class="chip">APIs</span>
+      <span class="chip">APIs Externas</span>
+      <span class="chip">CRUD</span>
+      <span class="chip">Middlewares</span>
+      <span class="chip">Autenticación</span>
+      <span class="chip">Sesiones</span>
+      <span class="chip">Cloud Deploy</span>
 
-          <h3>Herramientas</h3>
-          <span class="chip">Git</span>
-          <span class="chip">GitHub</span>
-          <span class="chip">Terminal</span>
-          <span class="chip">Deploy</span>
-        </div>
-      </div>
-    </section>
+      <!-- React -->
+      <h3>React</h3>
+      <span class="chip">JSX</span>
+      <span class="chip">Componentes</span>
+      <span class="chip">Props</span>
+      <span class="chip">Hooks</span>
+      <span class="chip">useState</span>
+      <span class="chip">useEffect</span>
+      <span class="chip">Eventos</span>
+      <span class="chip">Formularios</span>
+      <span class="chip">Integración con APIs</span>
+      <span class="chip">Material UI</span>
+
+      <!-- Herramientas -->
+      <h3>Herramientas</h3>
+      <span class="chip">Git</span>
+      <span class="chip">GitHub</span>
+      <span class="chip">Terminal</span>
+      <span class="chip">Tests manuales</span>
+      <span class="chip">DevTools</span>
+      <span class="chip">Deploy</span>
+    </div>
+  </div>
+</section>
+
 
     <!-- SOBRE MI -->
     <section id="sobre-mi">
@@ -307,11 +340,29 @@
     </section>
   </main>
 
-  <footer>
-    <div class="container">
-      © <span id="year"></span> Jeremias Mamani
-    </div>
-  </footer>
+<footer class="site-footer">
+  <div class="container footer-wrap">
+    <p class="copy">
+      © <span id="year"></span> <strong>Jeremias Mamani C.</strong> — Todos los derechos reservados.
+    </p>
+
+    <p class="note muted">
+      Disponible para trabajos freelance · Hecho con HTML, CSS y JavaScript · Catamarca, AR
+    </p>
+
+    <nav class="footer-nav" aria-label="Enlaces del pie">
+      <a href="https://wa.me/5493834991628" target="_blank" rel="noopener">WhatsApp</a>
+      <span aria-hidden="true">·</span>
+      <a href="mailto:jeremias.m28@gmail.com?subject=Contacto%20desde%20tu%20portfolio&body=Hola%20Jeremías,%20quiero%20contarte%20mi%20idea...">
+  Email
+</a>
+
+      <span aria-hidden="true">·</span>
+      <a href="https://github.com/jere-dev-tech" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
 
   <!-- Lottie (al final del body está bien) -->
   <script type="module" src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>

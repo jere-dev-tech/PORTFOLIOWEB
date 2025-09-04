@@ -622,13 +622,13 @@ header.site.matrix .menu-btn[aria-expanded="true"] + ul{
   background:
     radial-gradient(900px 500px at 50% 0,
       color-mix(in oklab, var(--matrix) 12%, transparent), transparent 65%),
-    url("imagenes/fondoseecionHero.webp") center bottom / cover no-repeat;
+    url("assets/fondoseecionHero.webp") center bottom / cover no-repeat;
 }
 
 /* (Opcional) techo espejado — usar .hero-bg.has-ceiling en el HTML */
 .hero-bg.has-ceiling::after{
   content:""; position:absolute; inset:0; pointer-events:none;
-  background:url("imagenes/fondoseecionHero.webp") center top / cover no-repeat;
+  background:url("assets/fondoseecionHero.webp") center top / cover no-repeat;
   transform:scaleY(-1); opacity:.8;
   -webkit-mask-image:linear-gradient(to bottom, #000 0%, transparent 55%);
           mask-image:linear-gradient(to bottom, #000 0%, transparent 55%);
@@ -1040,4 +1040,31 @@ details[open] .certs-summary .chev { transform: rotate(180deg); }
 }
 section {
   scroll-margin-top: 80px; /* ajustá según la altura de tu header */
+}
+.site-footer{
+  padding: 28px 0;
+  border-top: 1px solid color-mix(in oklab, var(--matrix) 35%, var(--border));
+  background:
+    radial-gradient(900px 140px at 50% 0, color-mix(in oklab, var(--matrix) 10%, transparent), transparent 60%),
+    var(--bg);
+}
+.footer-wrap{
+  display: grid;
+  gap: 6px;
+  text-align: center;
+}
+.site-footer .copy{ margin:0; }
+.site-footer .note{ margin:0; font-size:.95rem; }
+.footer-nav{
+  display: inline-flex; gap:10px; align-items:center; justify-content:center;
+}
+.footer-nav a{
+  color: color-mix(in oklab, var(--matrix) 35%, var(--muted));
+  padding:4px 8px; border-radius:8px; border:1px solid transparent;
+}
+.footer-nav a:hover{
+  background: var(--matrix-dark);
+  color:#caffea;
+  border-color: color-mix(in oklab, var(--matrix) 40%, var(--border));
+  text-shadow: 0 0 6px var(--matrix-glow);
 }
