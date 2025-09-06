@@ -18,7 +18,7 @@ const CONFIG = {
       desc: "Sitio multipágina con catálogo, formulario de pedidos, WhatsApp y mapa. UI con Tailwind y slider en JS.",
       link: "https://jere-dev-tech.github.io/tentazione-web/",
       tags: ["HTML", "CSS", "Tailwind", "JavaScript"],
-      cover: "assets/TenTazioneEJ.png"
+      cover: "assets/TENTAZION.png"
     },
     {
       title: "Mini API con Node.js",
