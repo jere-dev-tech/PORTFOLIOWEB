@@ -7,6 +7,7 @@
   <meta name="description" content="Paquetes de diseño web para emprendedores y pymes: básico, intermedio y avanzado. Opcional: mantenimiento mensual."/>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="servicios.css">
+  <script src="main.js" defer></script>
 </head>
 <body class="bg-[#0b0c10] text-white antialiased">
 <!-- HERO -->
@@ -70,18 +71,24 @@
   </div>
 </section>
 
-<!-- Back link (discreto) -->
-<div class="max-w-6xl mx-auto px-4 mb-6 text-center md:text-left">
-  <a href="index.html" class="back-link inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white">
-    <span class="back-arrow" aria-hidden="true">
-      <!-- Heroicon chevron-left (mejor que el carácter) -->
-      <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor">
-        <path d="M15.75 19.5a.75.75 0 0 1-.53-.22l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.56 12l6.72 6.72a.75.75 0 0 1-.53 1.28z"/>
-      </svg>
-    </span>
+<!-- Back link visible -->
+<div class="max-w-6xl mx-auto px-4 mb-6">
+  <a href="index.html" aria-label="Volver al inicio"
+     class="inline-flex items-center gap-2 text-base font-medium
+            px-3 py-2 rounded-full
+            bg-white/5 text-white/90
+            ring-1 ring-white/10
+            hover:bg-white/10 hover:text-white
+            shadow-sm hover:shadow
+            transition-all duration-200">
+    <svg viewBox="0 0 24 24" class="w-5 h-5 flechita" fill="currentColor" aria-hidden="true">
+      <path d="M15.75 19.5a.75.75 0 0 1-.53-.22l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.56 12l6.72 6.72a.75.75 0 0 1-.53 1.28z"/>
+    </svg>
     <span>Volver al inicio</span>
   </a>
 </div>
+
+
 
 
 
@@ -116,8 +123,8 @@
   <li>Responsive (celu/tablet/PC)</li>
   <li>Mapa con ubicación de tu negocio</li>
   <!-- extras del “incluye” -->
-  <li>Dominio .com o .com.ar — 1er año incluido</li>
-  <li>Hosting básico — 1er año incluido</li>
+  <li>Dominio .com o .com.ar</li>
+  <li>Hosting </li>
   <li>SSL (https) y correo profesional</li>
 </ul>
 

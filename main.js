@@ -18,7 +18,7 @@ const CONFIG = {
       desc: "Sitio multipágina con catálogo, formulario de pedidos, WhatsApp y mapa. UI con Tailwind y slider en JS.",
       link: "https://jere-dev-tech.github.io/tentazione-web/",
       tags: ["HTML", "CSS", "Tailwind", "JavaScript"],
-      cover: "assets/TenTazione.png"
+      cover: "assets/TenTazioneEJ.png"
     },
     {
       title: "Mini API con Node.js",
@@ -544,4 +544,12 @@ function initCertsDisclosure(){
 document.addEventListener('DOMContentLoaded', () => {
   /* ...lo que ya tenés... */
   initCertsDisclosure();
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const flechita = document.querySelector(".flechita");
+  
+  setInterval(() => {
+    flechita.classList.add("animar");
+    setTimeout(() => flechita.classList.remove("animar"), 700); 
+  }, 3000); // cada 3 segundos
 });

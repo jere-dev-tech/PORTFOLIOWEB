@@ -334,3 +334,15 @@ section .section-kicker{ color:#34d399; font-weight:700; letter-spacing:.3px; }
 /* variante de color (si querés usar otros) */
 /* .faq-item--cyan{ --neon: 34,211,238 }   #22d3ee */
 /* .faq-item--violet{ --neon: 167,139,250 } #a78bfa */
+@keyframes empuje {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-6px); }
+  40%  { transform: translateX(0); }
+  60%  { transform: translateX(-4px); }
+  80%  { transform: translateX(0); }
+  100% { transform: translateX(0); }
+}
+
+.flechita.animar {
+  animation: empuje 0.6s ease-in-out;
+}
