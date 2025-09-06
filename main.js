@@ -159,15 +159,28 @@ function renderProjects(containerSel, items){
     card.className = "card";
 
     const coverStyle = p.cover
-      ? `style="background-image:url('${p.cover}'); background-size:cover; background-position:center"`
+      ? `style="background-image:url('${p.cover}');"`
       : "";
 
     const hasDemo = p.link && p.link !== "#";
     const hasRepo = p.repo && p.repo !== "#";
-    const actions = [
-      hasDemo ? `<a class="btn" target="_blank" rel="noopener noreferrer" href="${p.link}">Demo</a>` : "",
-      hasRepo ? `<a class="btn" target="_blank" rel="noopener noreferrer" href="${p.repo}">Código</a>` : ""
-    ].filter(Boolean).join("");
+
+    const demoBtn = hasDemo ? `
+      <a class="btn btn--demo" target="_blank" rel="noopener noreferrer" href="${p.link}">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3z"/>
+          <path d="M5 5h6v2H7v10h10v-4h2v6H5V5z"/>
+        </svg>
+        <span>Demo</span>
+      </a>` : "";
+
+    const codeBtn = hasRepo ? `
+      <a class="btn btn--ghost" target="_blank" rel="noopener noreferrer" href="${p.repo}">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M8.7 17.3 3.4 12l5.3-5.3 1.4 1.4L6.2 12l3.9 3.9-1.4 1.4Zm6.6 0-1.4-1.4 3.9-3.9-3.9-3.9 1.4-1.4 5.3 5.3-5.3 5.3Z"/>
+        </svg>
+        <span>Código</span>
+      </a>` : "";
 
     card.innerHTML = `
       <div class="thumb" ${coverStyle}></div>
@@ -175,12 +188,14 @@ function renderProjects(containerSel, items){
         <h3>${p.title}</h3>
         <p class="muted">${p.desc}</p>
         <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
-        <div class="actions">${actions}</div>
+        <div class="actions">${demoBtn}${codeBtn}</div>
       </div>`;
+
     frag.appendChild(card);
   });
   grid.appendChild(frag);
 }
+
 
 /* =======================
    TEMA (matrix/cyberpunk/oceanic)

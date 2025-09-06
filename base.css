@@ -374,32 +374,135 @@ section{ padding:56px 0 }
 }
 
 /* ========= PROJECTS ========= */
-.grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px }
-.card{ border:1px solid var(--border); background:var(--surface); border-radius:var(--radius); overflow:hidden }
+/* ========= GRID RESPONSIVE ========= */
+.grid{
+  display:grid;
+  gap:20px;
+  grid-template-columns:1fr;
+}
+@media (min-width:720px){ .grid{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:1080px){ .grid{ grid-template-columns:repeat(3,1fr); } }
+
+/* ========= CARD PRO ========= */
+.card{
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--surface) 92%, transparent), var(--surface)),
+    linear-gradient(0deg, color-mix(in oklab, var(--surface) 85%, transparent), transparent);
+  border:1px solid color-mix(in oklab, var(--border) 85%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--border) 60%, transparent) inset,
+    0 10px 20px -12px rgba(0,0,0,.45);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  will-change: transform;
+}
+.card:hover{
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--border) 60%, transparent) inset,
+    0 18px 38px -16px rgba(0,0,0,.55);
+  border-color: color-mix(in oklab, var(--primary) 35%, var(--border));
+}
+
 .thumb{
+  position:relative;
   aspect-ratio:16/9;
-  background:linear-gradient(135deg,
-    color-mix(in oklab,var(--primary) 60%, transparent),
-    color-mix(in oklab,var(--accent) 50%, transparent));
+  background-size:cover;
+  background-position:center;
+  overflow:hidden;
 }
-.card-body{ padding:16px }
-.card h3{ margin:0 0 6px 0; font-size:18px }
-.tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px }
-.tag{ font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid var(--border); color:var(--muted) }
-.card .actions{ margin-top:10px; display:flex; gap:10px; flex-wrap:wrap }
-
-/* ========= ABOUT ========= */
-.about{ display:grid; grid-template-columns:1fr 1fr; gap:18px }
-.card-body ul{ margin:0; padding-left:20px }
-
-/* ========= CONTACT ========= */
-form{ display:grid; gap:12px }
-input, textarea{
-  border:1px solid var(--border); background:var(--surface); color:var(--text);
-  padding:12px 14px; border-radius:12px; width:100%;
+.thumb::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,.25));
+  pointer-events:none;
+  transition: opacity .3s ease;
 }
-textarea{ min-height:120px; resize:vertical }
-.row{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
+.card:hover .thumb::after{ opacity:.15; }
+
+.card-body{ padding:18px; }
+.card h3{
+  margin:0 0 6px 0;
+  font-size:20px;
+  line-height:1.25;
+  color:var(--text);
+}
+.card .muted{
+  margin:0;
+  color: color-mix(in oklab, var(--text) 70%, transparent);
+}
+.tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px }
+.tag{
+  font-size:12px; line-height:1;
+  padding:6px 10px; border-radius:999px;
+  border:1px solid color-mix(in oklab, var(--border) 90%, transparent);
+  color: color-mix(in oklab, var(--text) 80%, transparent);
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
+}
+
+.card .actions{
+  margin-top:14px; display:flex; gap:10px; flex-wrap:wrap
+}
+
+/* ========= BOTONES ========= */
+.btn{
+  --btn-bg: color-mix(in oklab, var(--surface) 90%, transparent);
+  --btn-text: var(--text);
+  position:relative;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:10px 14px; border-radius:12px;
+  border:1px solid color-mix(in oklab, var(--border) 85%, transparent);
+  color:var(--btn-text); background:var(--btn-bg);
+  font-weight:600; text-decoration:none;
+  transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+}
+.btn:hover{ transform:translateY(-1px); }
+.btn:active{ transform:translateY(0); }
+.btn:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px color-mix(in oklab, var(--primary) 35%, transparent);
+}
+
+/* DEMO = primario con gradiente y "shine" */
+.btn--demo{
+  --btn-bg: linear-gradient(90deg,
+    color-mix(in oklab, var(--primary) 88%, #0000),
+    color-mix(in oklab, var(--accent) 88%, #0000));
+  --btn-text: #fff;
+  border-color: color-mix(in oklab, var(--primary) 50%, var(--border));
+  box-shadow: 0 6px 18px -10px color-mix(in oklab, var(--primary) 80%, transparent);
+  overflow:hidden;
+}
+.btn--demo:hover{
+  box-shadow: 0 10px 30px -10px color-mix(in oklab, var(--primary) 85%, transparent);
+}
+.btn--demo::after{
+  content:"";
+  position:absolute; inset:-1px;
+  transform: skewX(-20deg) translateX(-120%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+  transition:none;
+}
+.btn--demo:hover::after{
+  animation: btnShine .8s ease;
+}
+@keyframes btnShine{
+  to{ transform: skewX(-20deg) translateX(120%); }
+}
+
+/* CODE = botón fantasma */
+.btn--ghost{
+  --btn-bg: color-mix(in oklab, var(--surface) 85%, transparent);
+  color: color-mix(in oklab, var(--text) 85%, transparent);
+}
+
+/* Iconos inline (ajuste suavizado) */
+.btn svg{
+  width:18px; height:18px; display:block;
+  opacity:.95;
+}
 
 /* ========= FOOTER ========= */
 footer{ padding:32px 0; color:var(--muted); border-top:1px solid var(--border) }
