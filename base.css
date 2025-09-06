@@ -1171,3 +1171,43 @@ section {
   border-color: color-mix(in oklab, var(--matrix) 40%, var(--border));
   text-shadow: 0 0 6px var(--matrix-glow);
 }
+/* ---- Contacto: layout estable y responsive ---- */
+#contactForm{
+  display: grid;
+  gap: 14px;
+}
+
+#contactForm .row{
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;           /* 1 col en mobile */
+}
+
+@media (min-width: 640px){
+  #contactForm .row{ grid-template-columns: 1fr 1fr; }  /* 2 cols en >=640px */
+}
+
+/* Que cada campo ocupe su fila/bloque completo */
+#contactForm label{ display: block; }
+
+/* Campos full width, sin encimarse */
+#contactForm input,
+#contactForm textarea{
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 12px;
+}
+
+#contactForm textarea{
+  min-height: 140px;
+  resize: vertical;
+}
+
+/* Botón bien ubicado (no se sube sobre el textarea) */
+#contactForm .btn[type="submit"]{
+  justify-self: start;   /* o end si lo querés a la derecha */
+  margin-top: 4px;
+}
