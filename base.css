@@ -781,7 +781,10 @@ header.site.matrix .menu-btn[aria-expanded="true"] + ul{
 }
 .hero-badge .txt{ font-family: var(--font-hl); } /* Oxanium en el badge */
 
-
+.hero-title .big {
+  font-size: 2.2em; /* hace que "Desarrollador" sea 30% más grande que el resto */
+  font-weight: 800; /* un poco más gruesa para destacarla */
+}
 
 .hero-badge .txt{ font-family: var(--font-hl); } /* ya lo venías usando */
 /* ====== Badge “Hola, soy Jeremías” estilo neón ====== */
