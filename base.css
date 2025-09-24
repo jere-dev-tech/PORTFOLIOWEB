@@ -711,11 +711,10 @@ header.site.matrix .menu-btn[aria-expanded="true"] + ul{
 
 /* ========= HERO NEÓN “MATRIX”  ========= */
 .hero.hero-neon{
-  position: relative;
-  padding: clamp(60px, 8vw, 120px) 0 clamp(80px, 10vw, 140px);
-  background:#0b0c10;
-  overflow:hidden;            /* más compatible que clip */
+  /* top               laterales  bottom (mucho menor) */
+  padding: clamp(60px, 8vw, 120px) 0 clamp(20px, 4vw, 48px);
 }
+
 
 /* ⭐ Fondo con imagen (suelo) */
 .hero-bg{
@@ -1240,4 +1239,32 @@ section {
   line-height: 1;
   margin-left: .25ch;                /* pequeño espacio lateral */
   vertical-align: baseline;
+}
+
+
+/* Espaciado del bloque hero */
+.hero { 
+  padding-bottom: clamp(48px, 10vw, 96px);   /* más aire abajo del hero */
+}
+
+/* Título → poquito menos pegado arriba, y deja lugar al párrafo */
+.hero-title{
+  margin-bottom: clamp(8px, 1.4vw, 14px);
+}
+
+/* “Transformando ideas…”: empujalo un poco hacia abajo */
+.hero-lead{
+  margin-top: clamp(10px, 2vw, 18px);        /* ↑ mové este valor si querés más/menos */
+}
+
+/* Botonera: bajarla más */
+.cta {
+  margin-top: clamp(60px, 6vw, 120px);
+}
+
+
+/* En móvil suele necesitar aún más aire */
+@media (max-width: 640px){
+  .hero-lead{ margin-top: 16px; }
+  .cta{ margin-top: 28px; }
 }
