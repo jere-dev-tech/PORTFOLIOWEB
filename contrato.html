@@ -13,6 +13,7 @@
 </head>
 
 
+
 <body>
 <section id="contratame" class="contact-wrap">
   <div class="container">
@@ -20,7 +21,11 @@
       <h2>Contrátame</h2>
       <p>Completá este formulario para contarme sobre tu proyecto y preparar una propuesta a medida.</p>
     </header>
-
+<div class="back-wrap">
+  <a class="btn secondary" href="/" aria-label="Volver al inicio del portfolio">
+    Volver al inicio
+  </a>
+</div>
     <form id="contratameForm" action="https://formspree.io/f/mblzjnep" method="POST" novalidate>
       <!-- Ajustes especiales para Formspree -->
       <input type="hidden" name="_subject" value="Nuevo proyecto desde el portfolio">
@@ -183,6 +188,49 @@
 </button>
 
 <style>
+
+.back-wrap .btn.secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  background: transparent;
+  border: 2px solid #7c5cff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  transition: background .2s;
+}
+
+.back-wrap .btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* animación de la flecha */
+.back-wrap .btn.secondary::before {
+  content: "←";
+  display: inline-block;
+  animation: arrowMove 1s infinite;
+}
+
+@keyframes arrowMove {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(-5px); }
+}
+
+/* rebote vertical */
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* la animación corre solo cuando el botón está visible */
+#toTop.show .arrow-fill,
+#toTop.show .arrow-base {
+  animation: bounceArrow 1.5s infinite;
+}
+
 /* reset básico */
 *,
 *::before,
@@ -356,16 +404,6 @@ html, body {
   update();
 })();
 </script>
-
-
-
-
-
-
-
-
-
-
 
 
 
