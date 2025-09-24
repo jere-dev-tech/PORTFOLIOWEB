@@ -1214,3 +1214,30 @@ section {
   justify-self: start;   /* o end si lo querés a la derecha */
   margin-top: 4px;
 }
+/* primera línea “Desarrollador Web” como bloque */
+.hero-title .hero-line{
+  display: block;
+}
+
+/* segunda línea como bloque con espacio arriba */
+.hero-title .hero-subline{
+  display: block;
+  margin-top: .35em;                 /* espacio entre líneas */
+  font-size: clamp(18px, 2.8vw, 28px);
+  line-height: 1.25;
+}
+
+/* “Desarrollador” más grande (sumado a tu .big actual) */
+.hero-title .ghost.big{
+  font-size: clamp(44px, 7.8vw, 72px);
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+/* “Web” un poco más grande que “Desarrollador” */
+.hero-title .web{
+  font-size: 1.55em;                 /* subí/bajá a gusto: 1.15–1.25 */
+  line-height: 1;
+  margin-left: .25ch;                /* pequeño espacio lateral */
+  vertical-align: baseline;
+}
