@@ -725,13 +725,13 @@ header.site.matrix .menu-btn[aria-expanded="true"] + ul{
   background:
     radial-gradient(900px 500px at 50% 0,
       color-mix(in oklab, var(--matrix) 12%, transparent), transparent 65%),
-    url("assets/fondoseecionHero.webp") center bottom / cover no-repeat;
+    url("assets/SECCIONHEROFONDO.png") center bottom / cover no-repeat;
 }
 
 /* (Opcional) techo espejado — usar .hero-bg.has-ceiling en el HTML */
 .hero-bg.has-ceiling::after{
   content:""; position:absolute; inset:0; pointer-events:none;
-  background:url("assets/fondoseecionHero.webp") center top / cover no-repeat;
+  background:url("assets/SECCIONHEROFONDO.png") center top / cover no-repeat;
   transform:scaleY(-1); opacity:.8;
   -webkit-mask-image:linear-gradient(to bottom, #000 0%, transparent 55%);
           mask-image:linear-gradient(to bottom, #000 0%, transparent 55%);
