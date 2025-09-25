@@ -273,8 +273,7 @@ function initContactForm(){
   const msg  = document.getElementById("formMsg");
   if(!form || !msg) return;
 
-  // ⚠️ PONÉ TU NÚMERO AQUÍ: con código de país y sin + ni 0, ni guiones
-  // Ej: Argentina (Catamarca) → 549XXXXXXXXXX (54 país + 9 móvil + número)
+
   const WHATSAPP_NUMBER = "5493834991628";
 
   form.addEventListener("submit", (e) => {
@@ -324,8 +323,8 @@ ${mensaje}
 }
 
 /* =======================
-   Splash de carga con memoria (mini/fast/full)
-   (ÚNICA versión)
+  
+ 
 ======================= */
 async function initSplashLoader(){
   const splash = document.getElementById("splash");
@@ -527,7 +526,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroStars(70);
 
   initSplashLoader().then(() => {
-    // si agregás una terminal en el hero, se animará en loop
+    //loopp
     initConsoleAnimation?.();
   });
 });
@@ -536,7 +535,7 @@ function initCertsDisclosure(){
   const details = document.getElementById('certsToggle');
   if(!btn || !details) return;
 
-  // Al hacer clic en "Ver certificados": abrir y scrollear
+  // 
   btn.addEventListener('click', (e) => {
     e.preventDefault();
     if(!details.open) details.open = true;
@@ -545,7 +544,7 @@ function initCertsDisclosure(){
     history.replaceState(null, '', '#certificados');
   });
 
-  // Si el usuario entra con #certificados en la URL, abrirlo
+  // 
   if(location.hash === '#certificados'){
     details.open = true;
     // aseguramos scroll correcto tras el load

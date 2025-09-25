@@ -1,6 +1,5 @@
-/* === Base reutilizable: color por variable === */
 .service-card{
-  --neon: 16,185,129;               /* default (emerald para Básica) */
+  --neon: 16,185,129;
   position: relative;
   border-radius: 1rem;
   isolation: isolate;
@@ -8,7 +7,6 @@
   will-change: transform, box-shadow;
 }
 
-/* Halo externo difuso */
 .service-card::after{
   content:"";
   position:absolute;
@@ -26,7 +24,6 @@
   transition: opacity .25s ease, filter .25s ease;
 }
 
-/* Línea nítida sobre el borde */
 .service-card::before{
   content:"";
   position:absolute; inset:0; border-radius: inherit;
@@ -34,7 +31,6 @@
   opacity:0; pointer-events:none; transition: opacity .25s ease;
 }
 
-/* Interacción */
 @media (hover:hover){
   .service-card:hover{
     transform: translateY(-2px);
@@ -46,6 +42,7 @@
   .service-card:hover::before,
   .service-card:hover::after{ opacity:1; }
 }
+
 .service-card:focus-visible,
 .service-card:focus-within{
   transform: translateY(-2px);
@@ -63,14 +60,12 @@
 
 @media (prefers-reduced-motion: reduce){ .service-card{ transition:none } }
 
-/* ===== Variantes de color ===== */
-.service-card--basic{    --neon: 16,185,129 }   /* emerald */
-.service-card--inter{    --neon: 34,211,238 }   /* cyan   (#22d3ee) */
-.service-card--advanced{ --neon: 167,139,250 }  /* violet (#a78bfa) */
+.service-card--basic{    --neon: 16,185,129 }
+.service-card--inter{    --neon: 34,211,238 }
+.service-card--advanced{ --neon: 167,139,250 }
 
-/* ===== Botón con sweep (mismo sistema por variable) ===== */
 .cta-btn{
-  --btn: 16,185,129;                  /* default emerald */
+  --btn: 16,185,129;
   position: relative;
   overflow: hidden; isolation: isolate; contain: paint;
   background: rgb(var(--btn)); color:#0b0c10;
@@ -78,7 +73,6 @@
 }
 .cta-btn > span{ position: relative; z-index: 1 }
 
-/* brillo diagonal */
 .cta-btn::after{
   content:""; position:absolute; top:-40%; left:-30%;
   width:40%; height:180%; transform: rotate(20deg);
@@ -87,7 +81,8 @@
   transition: left .6s ease, opacity .25s ease;
 }
 @media (hover:hover){
-  .cta-btn:hover{ filter: brightness(1.08);
+  .cta-btn:hover{
+    filter: brightness(1.08);
     box-shadow: 0 0 0 1px rgba(var(--btn),.45), 0 14px 40px rgba(var(--btn),.35);
     transform: translateY(-1px);
   }
@@ -100,14 +95,10 @@
 .cta-btn:active{ transform: translateY(0) scale(.995) }
 @media (hover:none){ .cta-btn::after{ display:none } }
 
-/* Variantes de botón ligadas a la card */
-.cta-btn--emerald{ --btn: 16,185,129 }    /* Básica */
-.cta-btn--cyan{    --btn: 34,211,238 }    /* Intermedia */
-.cta-btn--violet{  --btn: 167,139,250 }   /* Avanzada */
+.cta-btn--emerald{ --btn: 16,185,129 }
+.cta-btn--cyan{    --btn: 34,211,238 }
+.cta-btn--violet{  --btn: 167,139,250 }
 
-
-/* Badge superior que hereda el color de la card */
-/* ===== Badge superior (hereda el color --neon de la card) ===== */
 .plan-badge{
   position:absolute;
   top:-12px; right:16px;
@@ -119,20 +110,13 @@
   background: rgb(var(--neon));
   color:#0b0c10;
   border:1px solid rgba(255,255,255,.22);
-  /* brillo base suave */
   box-shadow:
     0 4px 14px rgba(var(--neon), .22),
     inset 0 0 0 1px rgba(0,0,0,.15);
   white-space:nowrap;
-
-  /* transición para animar el glow */
-  transition:
-    box-shadow .25s ease,
-    transform .25s ease,
-    filter .25s ease;
+  transition: box-shadow .25s ease, transform .25s ease, filter .25s ease;
 }
 
-/* 👉 activa el glow del badge cuando la CARD se hoverea/focusea */
 @media (hover:hover){
   .service-card:hover .plan-badge{
     transform: translateY(-1px);
@@ -145,7 +129,6 @@
   }
 }
 
-/* también en focus (teclado/tap en mobile) */
 .service-card:focus-visible .plan-badge,
 .service-card:focus-within .plan-badge{
   transform: translateY(-1px);
@@ -156,7 +139,7 @@
     0 0 42px rgba(var(--neon), .55),
     inset 0 0 0 1px rgba(0,0,0,.15);
 }
-/* Lista de features con bullets neón que heredan --neon de .service-card */
+
 .features{
   list-style:none; padding:0; margin:0;
 }
@@ -167,7 +150,6 @@
   content:"";
   flex:none;
   width:12px; height:12px; margin-top:.35em; border-radius:999px;
-  /* puntito brillante */
   background:
     radial-gradient(circle at 30% 30%,
       rgba(var(--neon),1) 0 45%,
@@ -178,8 +160,6 @@
     0 0 12px rgba(var(--neon),.55);
   transition: box-shadow .25s ease, transform .25s ease;
 }
-
-/* al hover/focus de la card, los bullets también “suben” el brillo */
 @media (hover:hover){
   .service-card:hover .features li::before{
     box-shadow:
@@ -194,29 +174,24 @@
     0 0 18px rgba(var(--neon),.85);
   transform: translateY(-1px);
 }
-/* Badge circular del logo dentro del botón */
+
 .wa-badge{
   display:inline-grid; place-items:center;
   width:26px; height:26px; border-radius:9999px;
-  background:#25D366;                /* verde oficial WhatsApp */
+  background:#25D366;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,.12);
-  position:relative; z-index:1;      /* queda por encima del “sweep” del botón */
+  position:relative; z-index:1;
 }
 .wa-badge .wa-glyph{
-  width:15px; height:15px; fill:#0b0c10; /* o #fff si preferís blanco */
+  width:15px; height:15px; fill:#0b0c10;
 }
 
-/* Si lo querés blanco sobre verde más oscuro: */
-/* .wa-badge{ background:#1fa855 }  .wa-badge .wa-glyph{ fill:#fff } */
-/* Flecha con micro-animación cada 3s */
 .back-arrow{
   display:inline-block;
   transform: translateX(0);
   animation: nudge-left 3s ease-in-out infinite;
   transition: transform .2s ease;
 }
-
-/* “descansa” la mayoría del tiempo; dos empujoncitos al inicio */
 @keyframes nudge-left{
   0%, 70%, 100% { transform: translateX(0) }
   10%           { transform: translateX(-4px) }
@@ -224,37 +199,30 @@
   30%           { transform: translateX(-2px) }
   40%           { transform: translateX(0) }
 }
-
-/* Al pasar el mouse, pausa la animación y deja la flecha apenas corrida */
-.back-link:hover .back-arrow{ 
+.back-link:hover .back-arrow{
   animation-play-state: paused;
   transform: translateX(-3px);
 }
-
-/* Accesibilidad: si el usuario reduce movimiento, la dejamos quieta */
 @media (prefers-reduced-motion: reduce){
   .back-arrow{ animation: none }
 }
-/* Subtítulo/encabezado de sección */
+
 section .section-kicker{ color:#34d399; font-weight:700; letter-spacing:.3px; }
 
-/* Afinado de tipografía de precios */
 .service-card .price{
   display:flex; align-items:baseline; gap:.4rem; margin-top:.25rem;
 }
 .service-card .price .currency,
 .service-card .price .period{ opacity:.8; font-size:.95rem }
 
-/* Espaciado dentro de las cards de mantenimiento (opcional) */
 .service-card ul{ margin-top:.75rem }
 
-/* En pantallas chicas: que respiren un poco más */
 @media (max-width: 640px){
   .service-card{ padding:16px }
 }
-/* ===== FAQ ===== */
+
 .faq-item{
-  --neon: 16,185,129; /* emerald */
+  --neon: 16,185,129;
   position: relative;
   border: 1px solid rgba(255,255,255,.08);
   border-radius: 14px;
@@ -262,8 +230,6 @@ section .section-kicker{ color:#34d399; font-weight:700; letter-spacing:.3px; }
   transition: border-color .25s ease, box-shadow .25s ease, background-color .25s ease;
   overflow: hidden;
 }
-
-/* glow lateral cuando está abierta o en hover */
 .faq-item::before{
   content:"";
   position:absolute; inset:0;
@@ -283,7 +249,6 @@ section .section-kicker{ color:#34d399; font-weight:700; letter-spacing:.3px; }
 }
 .faq-item[open]::before{ box-shadow: inset 0 0 0 2px rgba(var(--neon), .28); }
 
-/* summary */
 .faq-summary{
   position: relative; z-index: 1;
   list-style: none;
@@ -299,16 +264,14 @@ section .section-kicker{ color:#34d399; font-weight:700; letter-spacing:.3px; }
   letter-spacing: .2px;
 }
 
-/* caret */
 .faq-caret{
   width: 22px; height: 22px;
-  color: #cbd5e1; /* slate-300 */
+  color: #cbd5e1;
   transition: transform .25s ease, color .25s ease;
   flex: none;
 }
 .faq-item[open] .faq-caret{ transform: rotate(180deg); color: rgb(var(--neon)); }
 
-/* contenido con animación de altura (sin JS) */
 .faq-content{
   display: grid;
   grid-template-rows: 0fr;
@@ -323,7 +286,6 @@ section .section-kicker{ color:#34d399; font-weight:700; letter-spacing:.3px; }
   opacity: 1;
 }
 
-/* foco accesible */
 .faq-item:focus-within{
   outline: none;
   box-shadow:
@@ -331,9 +293,6 @@ section .section-kicker{ color:#34d399; font-weight:700; letter-spacing:.3px; }
     0 0 0 4px #0b0c10;
 }
 
-/* variante de color (si querés usar otros) */
-/* .faq-item--cyan{ --neon: 34,211,238 }   #22d3ee */
-/* .faq-item--violet{ --neon: 167,139,250 } #a78bfa */
 @keyframes empuje {
   0%   { transform: translateX(0); }
   20%  { transform: translateX(-6px); }
@@ -342,16 +301,14 @@ section .section-kicker{ color:#34d399; font-weight:700; letter-spacing:.3px; }
   80%  { transform: translateX(0); }
   100% { transform: translateX(0); }
 }
-
 .flechita.animar {
   animation: empuje 0.6s ease-in-out;
 }
-/* animación del lápiz */
+
 .pencil-icon {
   animation: wiggle 1.2s infinite ease-in-out;
-  transform-origin: center bottom; /* pivote como si escribiera */
+  transform-origin: center bottom;
 }
-
 @keyframes wiggle {
   0%, 100% { transform: rotate(0deg); }
   25% { transform: rotate(-15deg); }
