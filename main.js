@@ -566,4 +566,49 @@ document.addEventListener("DOMContentLoaded", () => {
     flechita.classList.add("animar");
     setTimeout(() => flechita.classList.remove("animar"), 700); 
   }, 3000); // cada 3 segundos
+
+// --- Cartel de neón: encendido tipo callejón ---
+(function(){
+  const title = document.querySelector('.hero-title');
+  if(!title) return;
+
+  // 1) El "Desarrollador" (ghost) enciende siempre
+  const ghost = title.querySelector('.ghost.big');
+  if (ghost){
+    ghost.style.setProperty('--fdelay', '0s');
+    ghost.classList.add('neon-start');
+  }
+
+  // 2) Cada .hl enciende cuando termina el scramble (cuando se elimina .decoding)
+  const hls = title.querySelectorAll('.hl');
+  hls.forEach((el, i) => {
+    const start = () => {
+      el.style.setProperty('--fdelay', `${0.20 + i * 0.18}s`); // escalonado: 0.20s, 0.38s, 0.56s...
+      el.classList.add('neon-start');
+    };
+    if (!el.classList.contains('decoding')) {
+      // ya terminó el decode → encender
+      start();
+    } else {
+      // observar hasta que termine
+      const mo = new MutationObserver(() => {
+        if (!el.classList.contains('decoding')) {
+          mo.disconnect();
+          start();
+        }
+      });
+      mo.observe(el, { attributes: true, attributeFilter: ['class'] });
+    }
+  });
+})();
+
+
+
+
+
+
+
+
+
+  
 });

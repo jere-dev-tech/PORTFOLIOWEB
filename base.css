@@ -794,7 +794,7 @@ header.site.matrix .menu-btn{
 }
 
 html, body { overflow-x: hidden; }
-.hl { text-shadow: 0 0 10px rgba(255, 78, 205, 0.7); }
+
 #skillsChips {
   display: flex;
   flex-wrap: wrap;
@@ -1074,4 +1074,190 @@ section { scroll-margin-top: 80px; }
 @media (max-width: 640px){
   .hero-lead{ margin-top: 16px; }
   .cta{ margin-top: 28px; }
+}
+/* Estado temporal mientras decodifica: texto normal, sin gradiente ni subrayado */
+.hero-title .hl.decoding{
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: var(--text) !important;
+  text-shadow: none !important;
+}
+.hero-title .hl.decoding::after{ display: none !important; } /* oculta el underline animado */
+/* Highlight final: usa variables del tema (cambia solo al cambiar de tema) */
+.hero-title .hl{
+  background: linear-gradient(90deg, var(--matrix), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;                  /* texto toma el gradiente */
+  text-shadow: 0 0 10px color-mix(in oklab, var(--matrix) 30%, transparent);
+}
+
+/* Durante el scramble: mostrar texto normal para evitar “bloques” pintados */
+.hero-title .hl.decoding{
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: var(--text) !important;       /* usa el color base del tema */
+  text-shadow: none !important;
+}
+.hero-title .hl.decoding::after{ display:none !important; }
+
+/* Si tenías un glow global en .hl, limitá al hero y solo cuando termine */
+.hero-title .hl:not(.decoding){
+  text-shadow: 0 0 10px rgba(255,78,205,.7); /* opcional; podés bajarlo o quitarlo */
+}
+/* ====== NEÓN SUAVE (menor brillo) ====== */
+/* Un control general: podés bajar/subir este factor */
+:root{ --neon-intensity: .45; }           /* 0.30 = muy suave · 0.55 = medio */
+@media (max-width:640px){
+  :root{ --neon-intensity: .34; }         /* aún más suave en mobile */
+}
+
+/* Highlight con contorno y glow, pero moderado */
+.hero-title .hl{
+  position: relative;
+  background: linear-gradient(90deg, var(--matrix), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-title .hl:not(.decoding){
+  --strokeCol: color-mix(in oklab, var(--matrix) 58%, #fff);
+
+  /* contorno finito */
+  -webkit-text-stroke: calc(.7px * var(--neon-intensity)) var(--strokeCol);
+
+  /* glow reducido (menos capas y radios más chicos) */
+  text-shadow:
+    0 0 calc(1.5px * var(--neon-intensity)) var(--strokeCol),
+    0 0 calc(6px   * var(--neon-intensity)) color-mix(in oklab, var(--matrix) 28%, transparent),
+    0 0 calc(12px  * var(--neon-intensity)) color-mix(in oklab, var(--accent) 18%, transparent);
+
+  /* halo leve */
+  filter: drop-shadow(0 0 calc(5px * var(--neon-intensity))
+           color-mix(in oklab, var(--matrix) 16%, transparent));
+
+  /* pulso muy sutil */
+  animation: neonPulseSoft 3s ease-in-out infinite;
+}
+
+/* durante el scramble, seguimos apagando el neón */
+.hero-title .hl.decoding{
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: var(--text) !important;
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+  filter: none !important;
+}
+.hero-title .hl.decoding::after{ display:none !important; }
+
+/* Pulso suave (amplitud reducida) */
+@keyframes neonPulseSoft{
+  0%,100%{
+    text-shadow:
+      0 0 calc(1.2px * var(--neon-intensity)) var(--strokeCol),
+      0 0 calc(5px   * var(--neon-intensity)) color-mix(in oklab, var(--matrix) 26%, transparent),
+      0 0 calc(10px  * var(--neon-intensity)) color-mix(in oklab, var(--accent) 16%, transparent);
+    filter: drop-shadow(0 0 calc(4px * var(--neon-intensity))
+             color-mix(in oklab, var(--matrix) 14%, transparent));
+  }
+  50%{
+    text-shadow:
+      0 0 calc(1.8px * var(--neon-intensity)) var(--strokeCol),
+      0 0 calc(7px   * var(--neon-intensity)) color-mix(in oklab, var(--matrix) 30%, transparent),
+      0 0 calc(14px  * var(--neon-intensity)) color-mix(in oklab, var(--accent) 18%, transparent);
+    filter: drop-shadow(0 0 calc(6px * var(--neon-intensity))
+             color-mix(in oklab, var(--matrix) 16%, transparent));
+  }
+}
+
+/* Opcional: también bajar el de "Desarrollador" */
+.hero-title .ghost.big{
+  color: var(--text);
+  -webkit-text-stroke: calc(.9px * var(--neon-intensity))
+                       color-mix(in oklab, var(--matrix) 52%, var(--text));
+  text-shadow:
+    0 0 calc(5px * var(--neon-intensity)) color-mix(in oklab, var(--matrix) 26%, transparent),
+    0 0 calc(12px* var(--neon-intensity)) color-mix(in oklab, var(--accent) 18%, transparent);
+  filter: none;
+  animation: none; /* sin pulso para el ghost */
+}
+
+:root{
+  --breath-intensity: .32;   
+  --breath-speed: 3.6s;      
+}
+@media (max-width:640px){
+  :root{ --breath-intensity: .26; }  /* un poco menos en mobile */
+}
+
+.hero-title .ghost.big.neon-start,
+.hero-title .hl.neon-start:not(.decoding){
+  animation:
+    /* 1) encendido tipo callejón */
+    neonAlleyOn 1.6s steps(1, end) var(--fdelay, 0s) both,
+    /* 2) respiración/“hum” del tubo */
+    neonBreath var(--breath-speed) ease-in-out calc(var(--fdelay, 0s) + 1.6s) infinite;
+
+}
+
+/* Encendido con flickers (igual al anterior) */
+@keyframes neonAlleyOn{
+  0%   { opacity: 0; filter:none; text-shadow: none; -webkit-text-stroke: .2px rgba(255,255,255,.18); }
+  6%   { opacity: 1; text-shadow: 0 0 4px color-mix(in oklab, var(--matrix) 30%, transparent); }
+  10%  { opacity: .15; text-shadow: none; }
+  17%  { opacity: .9;  text-shadow: 0 0 6px color-mix(in oklab, var(--matrix) 35%, transparent),
+                         0 0 12px color-mix(in oklab, var(--accent) 22%, transparent); }
+  23%  { opacity: .35; text-shadow: none; }
+  31%  { opacity: 1;   filter: brightness(1.02) contrast(1.02); }
+  39%  { opacity: .6;  text-shadow: 0 0 5px color-mix(in oklab, var(--matrix) 28%, transparent); }
+  47%  { opacity: 1;   text-shadow: 0 0 7px color-mix(in oklab, var(--matrix) 30%, transparent),
+                         0 0 14px color-mix(in oklab, var(--accent) 18%, transparent); }
+  58%  { opacity: .8;  }
+  72%  { opacity: 1;   }
+  100% { opacity: 1;   filter: none; }
+}
+
+
+@keyframes neonBreath{
+  0%,100%{
+    text-shadow:
+      0 0 calc(5px  * var(--breath-intensity)) color-mix(in oklab, var(--matrix) 24%, transparent),
+      0 0 calc(10px * var(--breath-intensity)) color-mix(in oklab, var(--accent) 16%, transparent);
+    filter:
+      drop-shadow(0 0 calc(5px * var(--breath-intensity))
+      color-mix(in oklab, var(--matrix) 14%, transparent));
+  }
+  50%{
+    text-shadow:
+      0 0 calc(7px  * var(--breath-intensity)) color-mix(in oklab, var(--matrix) 30%, transparent),
+      0 0 calc(14px * var(--breath-intensity)) color-mix(in oklab, var(--accent) 20%, transparent);
+    filter:
+      drop-shadow(0 0 calc(7px * var(--breath-intensity))
+      color-mix(in oklab, var(--matrix) 18%, transparent));
+  }
+}
+
+/* Mientras decodifica, seguimos sin neón para evitar bloques coloreados */
+.hero-title .hl.decoding{
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: var(--text) !important;
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+  filter: none !important;
+}
+.hero-title .hl.decoding::after{ display:none !important; }
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce){
+  .hero-title .ghost.big.neon-start,
+  .hero-title .hl.neon-start:not(.decoding){
+    animation: none;
+  }
 }
