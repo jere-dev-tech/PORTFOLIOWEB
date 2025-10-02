@@ -40,6 +40,15 @@ const CONFIG = {
 };
 
 /* =======================
+   CONSTANTES GLOBALES
+======================= */
+const HERO_START_DELAY = 2000;           // ✅ 2s tras carga
+let __tDomReady = 0;
+let __heroEffectsStarted = false;
+let __heroPlayerStarted = false;
+
+
+/* =======================
    UTILIDADES
 ======================= */
 const $  = s => document.querySelector(s);
@@ -133,6 +142,20 @@ function startHeroAnimation(){
   player.play?.();
 }
 
+/* 🔒 Garantiza que los efectos principales del hero se disparen una sola vez */
+function startHeroEffectsOnce(){
+  if (__heroEffectsStarted) return;
+  __heroEffectsStarted = true;
+  // ⛔️ ya NO arrancamos el player acá
+  startBadgeHand?.();
+}
+
+function startHeroPlayerNowOnce(){
+  if (__heroPlayerStarted) return;
+  __heroPlayerStarted = true;
+  startHeroAnimation?.(); // arranca la ilustración del tecleo
+}
+
 /* =======================
    RENDERIZADOS
 ======================= */
@@ -186,8 +209,8 @@ function renderProjects(containerSel, items){
       <div class="thumb" ${coverStyle}></div>
       <div class="card-body">
         <h3>${p.title}</h3>
-        <p class="muted">${p.desc}</p>
-        <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+        <p class="muted">${p.desc || ""}</p>
+        <div class="tags">${(p.tags || []).map(t => `<span class="tag">${t}</span>`).join("")}</div>
         <div class="actions">${demoBtn}${codeBtn}</div>
       </div>`;
 
@@ -195,7 +218,6 @@ function renderProjects(containerSel, items){
   });
   grid.appendChild(frag);
 }
-
 
 /* =======================
    TEMA (matrix/cyberpunk/oceanic)
@@ -228,25 +250,21 @@ function initThemeToggle(){
   }
 }
 
-
-
 /* =======================
-   MENÚ MÓVIL (☰ → ✕ con 3 spans)
+   MENÚ MÓVIL
 ======================= */
 function initMobileMenu(){
   const btn = document.getElementById("menuBtn");
   const list = document.getElementById("menuList");
   if(!btn || !list) return;
 
-  // toggle normal (abre/cierra)
   btn.addEventListener("click", (e) => {
-    e.stopPropagation(); // que no se dispare el click global
+    e.stopPropagation();
     const expanded = btn.getAttribute("aria-expanded") === "true";
     btn.setAttribute("aria-expanded", String(!expanded));
     btn.classList.toggle("open", !expanded);
   });
 
-  // cerrar al hacer clic en un link del menú
   list.querySelectorAll("a").forEach(a => {
     a.addEventListener("click", () => {
       btn.setAttribute("aria-expanded", "false");
@@ -254,7 +272,6 @@ function initMobileMenu(){
     });
   });
 
-  // cerrar al hacer clic fuera
   document.addEventListener("click", (e) => {
     const clickInside = btn.contains(e.target) || list.contains(e.target);
     if (!clickInside) {
@@ -264,15 +281,13 @@ function initMobileMenu(){
   });
 }
 
-
 /* =======================
-   FORMULARIO (DEMO)
+   FORMULARIO
 ======================= */
 function initContactForm(){
   const form = document.getElementById("contactForm");
   const msg  = document.getElementById("formMsg");
   if(!form || !msg) return;
-
 
   const WHATSAPP_NUMBER = "5493834991628";
 
@@ -281,13 +296,11 @@ function initContactForm(){
     const data = Object.fromEntries(new FormData(form));
     const { nombre, email, mensaje } = data;
 
-    // Validación mínima
     if(!nombre || !email || !mensaje){
       msg.textContent = "Completá tu nombre, email y mensaje.";
       return;
     }
 
-    // Armamos el texto
     const text =
 `¡Hola Jeremías! 👋
 Quiero contarte mi idea:
@@ -300,15 +313,12 @@ ${mensaje}
 
 (Enviado desde tu portfolio)`;
 
-    // Encode para URL
     const encoded = encodeURIComponent(text);
     const waURL   = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
 
-    // Intento abrir WhatsApp en nueva pestaña
     const win = window.open(waURL, "_blank", "noopener");
     msg.textContent = "Abriendo WhatsApp…";
 
-    // Fallback: si el popup bloquea o no se abrió, ofrecemos email
     setTimeout(() => {
       if (!win || win.closed || typeof win.closed === "undefined") {
         const mailto = `mailto:tu-email@dominio.com?subject=${encodeURIComponent("Nuevo contacto desde el portfolio")}&body=${encoded}`;
@@ -317,14 +327,12 @@ ${mensaje}
       }
     }, 400);
 
-    // Limpio el form
     form.reset();
   });
 }
 
 /* =======================
-  
- 
+   SPLASH
 ======================= */
 async function initSplashLoader(){
   const splash = document.getElementById("splash");
@@ -486,15 +494,74 @@ function startBadgeHand(){
   badge.classList.add("play");
 }
 
+/* ⏰ Programa el arranque del hero a los 2s desde DOM listo
+   (si hubo splash y ya pasaron esos 2s, arranca inmediato) */
 function finalizeBoot(){
-  startHeroAnimation?.();
-  startBadgeHand?.();
+  // ⏩ tecleo: arranca ya cuando la página se muestra (después del splash si lo hay)
+  startHeroPlayerNowOnce();
+
+  // 🔆 neón y demás efectos: a los 2s desde DOMContentLoaded (ajustado si hubo splash)
+  const elapsed = performance.now() - __tDomReady;
+  const left = Math.max(0, HERO_START_DELAY - elapsed);
+  setTimeout(() => startHeroEffectsOnce(), left);
+}
+
+/* =======================
+   Certificados (details helper)
+======================= */
+function initCertsDisclosure(){
+  const btn = document.querySelector('[data-open-cert]');
+  const details = document.getElementById('certsToggle');
+  if(!btn || !details) return;
+
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if(!details.open) details.open = true;
+    document.getElementById('certificados')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    history.replaceState(null, '', '#certificados');
+  });
+
+  if(location.hash === '#certificados'){
+    details.open = true;
+    setTimeout(() => {
+      document.getElementById('certificados')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }
+}
+
+/* =======================
+   Scramble (texto → ruido → texto)
+======================= */
+function scrambleIn(el, delay = 0, speed = 18){
+  const chars = "!<>-_\\/[]{}—=+*^?#________";
+  const original = el.textContent;
+  el.classList.add("decoding");
+  setTimeout(() => {
+    let frame = 0;
+    const total = original.length * 3 + 12;
+    (function tick(){
+      if (frame >= total){
+        el.textContent = original;
+        el.classList.remove("decoding"); // dispara el neón por el observer
+        return;
+      }
+      el.textContent = original.split("").map((ch, i) => {
+        if (i < frame / 3) return ch;
+        return chars[(Math.random() * chars.length) | 0];
+      }).join("");
+      frame++;
+      requestAnimationFrame(tick);
+    })();
+  }, delay);
 }
 
 /* =======================
    BOOT
 ======================= */
 document.addEventListener("DOMContentLoaded", () => {
+  __tDomReady = performance.now(); // 🕒 para el delay global
+
+  // dinámicos simples
   const y = $("#year");
   if (y) y.textContent = new Date().getFullYear();
 
@@ -508,10 +575,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // render
   renderChips("#stackChips", CONFIG.stack);
   renderChips("#skillsChips", CONFIG.skills);
   renderProjects("#projectsGrid", CONFIG.projects);
 
+  // smooth scroll
   $$('a[href^="#"]').forEach(a => {
     a.addEventListener("click", e => {
       const id = a.getAttribute("href").slice(1);
@@ -520,95 +589,82 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // init
   initThemeToggle();
   initMobileMenu();
   initContactForm();
   initHeroStars(70);
-
-  initSplashLoader().then(() => {
-    //loopp
-    initConsoleAnimation?.();
-  });
-});
-function initCertsDisclosure(){
-  const btn = document.querySelector('[data-open-cert]');
-  const details = document.getElementById('certsToggle');
-  if(!btn || !details) return;
-
-  // 
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if(!details.open) details.open = true;
-    document.getElementById('certificados')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    // actualizar hash (opcional)
-    history.replaceState(null, '', '#certificados');
-  });
-
-  // 
-  if(location.hash === '#certificados'){
-    details.open = true;
-    // aseguramos scroll correcto tras el load
-    setTimeout(() => {
-      document.getElementById('certificados')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
-  }
-}
-
-// Llamalo en tu DOMContentLoaded existente:
-document.addEventListener('DOMContentLoaded', () => {
-  /* ...lo que ya tenés... */
   initCertsDisclosure();
-});
-document.addEventListener("DOMContentLoaded", () => {
+
+  // flechita (si existe)
   const flechita = document.querySelector(".flechita");
-  
-  setInterval(() => {
-    flechita.classList.add("animar");
-    setTimeout(() => flechita.classList.remove("animar"), 700); 
-  }, 3000); // cada 3 segundos
-
-// --- Cartel de neón: encendido tipo callejón ---
-(function(){
-  const title = document.querySelector('.hero-title');
-  if(!title) return;
-
-  // 1) El "Desarrollador" (ghost) enciende siempre
-  const ghost = title.querySelector('.ghost.big');
-  if (ghost){
-    ghost.style.setProperty('--fdelay', '0s');
-    ghost.classList.add('neon-start');
+  if (flechita){
+    setInterval(() => {
+      flechita.classList.add("animar");
+      setTimeout(() => flechita.classList.remove("animar"), 700);
+    }, 3000);
   }
 
-  // 2) Cada .hl enciende cuando termina el scramble (cuando se elimina .decoding)
-  const hls = title.querySelectorAll('.hl');
-  hls.forEach((el, i) => {
-    const start = () => {
-      el.style.setProperty('--fdelay', `${0.20 + i * 0.18}s`); // escalonado: 0.20s, 0.38s, 0.56s...
-      el.classList.add('neon-start');
-    };
-    if (!el.classList.contains('decoding')) {
-      // ya terminó el decode → encender
-      start();
-    } else {
-      // observar hasta que termine
-      const mo = new MutationObserver(() => {
-        if (!el.classList.contains('decoding')) {
-          mo.disconnect();
-          start();
-        }
-      });
-      mo.observe(el, { attributes: true, attributeFilter: ['class'] });
-    }
+  // Scramble escalonado de los .hl (se encienden luego del delay global)
+  document.querySelectorAll(".hero-title .hl").forEach((el, i) => {
+    scrambleIn(el, 180 + i * 140);
   });
-})();
 
+  // --- Cartel de neón: encendido tipo callejón (con retardo global de 2s) ---
+  (function(){
+    const title = document.querySelector('.hero-title');
+    if(!title) return;
 
+    const START_DELAY_MS = HERO_START_DELAY;
+    const t0 = __tDomReady; // medimos desde DOM listo
+    const waitLeft = () => Math.max(0, START_DELAY_MS - (performance.now() - t0));
+    const startAfter = (fn) => setTimeout(fn, waitLeft());
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // 1) "Desarrollador" (ghost)
+    const ghost = title.querySelector('.ghost.big');
+    if (ghost && !ghost.classList.contains('neon-start')){
+      if (reduceMotion){
+        startAfter(() => ghost.classList.add('neon-start'));
+      } else {
+        startAfter(() => {
+          ghost.style.setProperty('--fdelay', '0s');
+          ghost.classList.add('neon-start');
+        });
+      }
+    }
 
+    // 2) Cada .hl se enciende cuando termina el scramble (cuando se quita .decoding)
+    const hls = title.querySelectorAll('.hl');
+    hls.forEach((el, i) => {
+      const fire = () => {
+        if (el.classList.contains('neon-start')) return; // evita doble encendido
+        if (reduceMotion){
+          el.classList.remove('decoding'); // por si quedó colgado
+          el.classList.add('neon-start');
+          return;
+        }
+        el.style.setProperty('--fdelay', `${0.20 + i * 0.18}s`);
+        el.classList.add('neon-start');
+      };
 
+      const schedule = () => startAfter(fire);
 
+      if (!el.classList.contains('decoding')){
+        schedule();
+      } else {
+        const mo = new MutationObserver(() => {
+          if (!el.classList.contains('decoding')){
+            mo.disconnect();
+            schedule();
+          }
+        });
+        mo.observe(el, { attributes: true, attributeFilter: ['class'] });
+      }
+    });
+  })();
 
-
-  
+  // ⛳️ Inicia el loader del splash (si no hay splash, finaliza boot y agenda el hero con el delay)
+  initSplashLoader();
 });
