@@ -14,7 +14,7 @@ const CONFIG = {
   ],
 projects: [
     {
-      title: "Zeus Gym — GYMNASIO",
+      title: "Zeus — GYMNASIO",
       desc: "Landing page de alto impacto visual diseñada en Framer. Enfoque en conversiones, animaciones fluidas y diseño ultra-responsive.",
       link: "https://fluffy-studies-846955.framer.app/",
       tags: ["Framer", "UI/UX", "No-Code", "Web Design"],

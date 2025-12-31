@@ -171,43 +171,47 @@ body {
   margin: 0;
 }
 
+/* 1. Reducimos el espacio que el fondo le roba al formulario */
 .contact-wrap {
-  padding: 60px 20px;
+  padding: 40px 10px; /* Reducimos de 60px/20px a 40px/10px */
   background: radial-gradient(circle at top right, rgba(110, 231, 183, 0.05), transparent),
               radial-gradient(circle at bottom left, rgba(96, 165, 250, 0.05), transparent);
-}
-
-.container {
-  /* 1. Aumentamos el ancho máximo (estaba en 850px o 950px) */
-  max-width: 1500px; 
-  
-  /* 2. Aseguramos que ocupe casi todo el ancho en pantallas medianas */
-  width: 100%; 
-  
-  margin: 0 auto;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 28px; /* Un poco más de redondeado para el nuevo tamaño */
-  
-  /* 3. Aumentamos el espacio interno (Padding) para que respire */
-  padding: 90px; 
-  
-  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+  width: 100%;
   box-sizing: border-box;
 }
 
-/* Ajuste necesario para que en móviles no pierda demasiado espacio por el padding grande */
-@media (max-width: 768px) {
-  .container {
-    padding: 30px 20px; /* Padding más pequeño solo en celulares */
-    width: 92%;
-    border-radius: 20px;
-  }
+/* 2. Ajustamos el contenedor para que se expanda más */
+.container {
+  max-width: 1200px; /* Lo hacemos aún más ancho si la pantalla lo permite */
+  width: 98%;       /* Que ocupe casi el 100% del ancho disponible en móviles */
+  margin: 0 auto;
+  
+  /* Ajustamos el padding interno: más arriba/abajo, menos a los lados en pantallas grandes */
+  padding: 50px 40px; 
+  
+  box-sizing: border-box;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
 }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 30px; /* Aumentamos el espacio entre columnas también */
+
+/* 3. REGLA DE ORO PARA MÓVILES (iPhone 12 Pro, etc) */
+@media (max-width: 768px) {
+  .contact-wrap {
+    padding: 20px 5px; /* Casi nada de margen externo en celular */
+  }
+
+  .container {
+    width: 100%;       /* El formulario toca casi los bordes de la pantalla */
+    padding: 30px 15px; /* Reducimos el padding interno para que las preguntas no se vean finitas */
+    border-radius: 15px; /* Menos redondeado para ganar píxeles de ancho */
+    border-left: none;  /* Opcional: quitar bordes laterales para ganar espacio */
+    border-right: none;
+  }
+  
+  .grid {
+    gap: 15px; /* Menos espacio entre campos para que todo quepa */
+  }
 }
 /* HEADER */
 .head h2 {
@@ -414,7 +418,34 @@ input:focus, textarea:focus {
 .btn-back:hover::after {
   width: 100%;
 }
+/* Seleccionamos específicamente el span de la flecha */
+.btn-back .arrow {
+  display: inline-block;
+  color: var(--primary);
+  font-size: 1.3rem;
+  font-weight: bold;
+  
+  /* Aplicamos la animación: nombre | duración | modo | infinito */
+  animation: arrowIndicate 1.5s ease-in-out infinite;
+}
 
+/* Creamos el movimiento de vaivén hacia la izquierda */
+@keyframes arrowIndicate {
+  0%, 100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-6px); /* Se desplaza a la izquierda */
+    opacity: 0.7; /* Un leve parpadeo para darle más vida */
+  }
+}
+
+/* Opcional: Cuando el usuario pone el mouse, la animación se vuelve más rápida */
+.btn-back:hover .arrow {
+  animation: arrowIndicate 0.6s ease-in-out infinite;
+  color: var(--accent); /* Cambia de color al pasar el mouse */
+}
 /* ANIMACIÓN DE LA FLECHA */
 @keyframes arrowBounce {
   0%, 100% { transform: translateX(0); }
