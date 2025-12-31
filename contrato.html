@@ -178,15 +178,37 @@ body {
 }
 
 .container {
-  max-width: 850px;
+  /* 1. Aumentamos el ancho máximo (estaba en 850px o 950px) */
+  max-width: 1500px; 
+  
+  /* 2. Aseguramos que ocupe casi todo el ancho en pantallas medianas */
+  width: 100%; 
+  
   margin: 0 auto;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 40px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  border-radius: 28px; /* Un poco más de redondeado para el nuevo tamaño */
+  
+  /* 3. Aumentamos el espacio interno (Padding) para que respire */
+  padding: 90px; 
+  
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+  box-sizing: border-box;
 }
 
+/* Ajuste necesario para que en móviles no pierda demasiado espacio por el padding grande */
+@media (max-width: 768px) {
+  .container {
+    padding: 30px 20px; /* Padding más pequeño solo en celulares */
+    width: 92%;
+    border-radius: 20px;
+  }
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px; /* Aumentamos el espacio entre columnas también */
+}
 /* HEADER */
 .head h2 {
   font-family: 'Space Grotesk', sans-serif;
