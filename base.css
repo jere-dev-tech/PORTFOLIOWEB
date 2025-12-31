@@ -726,3 +726,329 @@ body.splashing{ overflow:hidden }
   transition:all .2s ease;
 }
 .chip:hover{ background:#00ff88; color:#000; transform:scale(1.05); }
+/* ================================
+   PROYECTOS – FIX RESPONSIVE MOBILE
+================================ */
+
+/* Imagen del proyecto */
+.card .thumb{
+  aspect-ratio: 16 / 9;
+  height: auto;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Grid en mobile */
+@media (max-width: 640px){
+  #projectsGrid{
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  /* Card general */
+  .card{
+    border-radius: 16px;
+  }
+
+  /* Contenido interno */
+  .card-body{
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+  }
+
+  /* Título */
+  .card h3{
+    font-size: 17px;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+
+  /* BOTONES – visibles rápido */
+  .card .actions{
+    order: 2;
+    display: flex;
+    gap: 10px;
+    margin: 10px 0 6px;
+  }
+
+  .card .actions .btn{
+    flex: 1;
+    justify-content: center;
+    padding: 10px 0;
+    font-size: 14px;
+  }
+
+  /* Descripción */
+  .card .muted{
+    order: 3;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  /* Tags */
+  .card .tags{
+    order: 4;
+    margin-top: 8px;
+    gap: 6px;
+  }
+
+  .card .tag{
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+}
+#projectsGrid .card:first-child{
+  border: 1px solid var(--accent);
+}
+/* ================================
+   SECTION TITLE – PROYECTOS (CENTRADO)
+================================ */
+
+.section-head{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.section-title{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  font-family: var(--font-title);
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+/* icono */
+.section-icon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+
+  color: var(--title-accent);
+  background:
+    radial-gradient(120% 120% at 30% 20%,
+      color-mix(in oklab, var(--accent) 25%, transparent),
+      transparent 60%);
+  box-shadow:
+    0 0 12px color-mix(in oklab, var(--accent) 35%, transparent);
+}
+
+.section-icon svg{
+  width: 18px;
+  height: 18px;
+}
+
+/* Mobile */
+@media (max-width: 640px){
+  .section-title{
+    gap: 8px;
+  }
+
+  .section-icon{
+    width: 24px;
+    height: 24px;
+  }
+
+  .section-icon svg{
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* ================================
+   FIX CENTRADO REAL EN MOBILE
+================================ */
+
+/* contenedor */
+#proyectos .section-head{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* título */
+#proyectos .section-title{
+  width: 100%; /* 🔑 CLAVE */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centra icono + texto */
+  gap: 10px;
+  text-align: center;
+}
+
+/* icono no empuja */
+#proyectos .section-icon{
+  flex-shrink: 0;
+}
+
+/* ================================
+   PROYECTOS DESTACADOS – FINAL
+================================ */
+
+#proyectos{
+  padding-top: clamp(4rem, 8vw, 6rem);
+}
+
+/* contenedor del título */
+#proyectos .section-head{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3.5rem; /* aire con las cards */
+}
+
+/* título */
+#proyectos .section-title{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  font-family: var(--font-title);
+  font-size: clamp(1.9rem, 4.8vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: .4px;
+}
+
+/* icono */
+#proyectos .section-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+
+  color: var(--title-accent);
+  background:
+    radial-gradient(120% 120% at 30% 20%,
+      color-mix(in oklab, var(--accent) 25%, transparent),
+      transparent 60%);
+  box-shadow:
+    0 0 12px color-mix(in oklab, var(--accent) 35%, transparent);
+}
+
+#proyectos .section-icon svg{
+  width: 18px;
+  height: 18px;
+}
+
+/* 1. Preparamos el contenedor del título */
+.reveal-underline {
+  position: relative;
+  display: inline-flex; /* Para que el subrayado se ajuste al texto + icono */
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px; /* Espacio para la línea */
+}
+
+/* 2. Estado inicial del subrayado (Invisible) */
+.title-underline {
+  position: absolute;
+  width: 60%; /* Ancho acortado */
+  left: 50%; /* Centrado */
+  bottom: 0;
+  height: 3px;
+  
+  /* Gradiente que se desvanece en las puntas */
+  background: linear-gradient(90deg, transparent, var(--matrix), var(--accent), transparent);
+  box-shadow: 0 0 10px var(--matrix-glow);
+  
+  /* Estado inicial: Centrado (translateX) y encogido (scaleX 0) */
+  transform: translateX(-50%) scaleX(0); 
+  transform-origin: center; 
+  
+  /* Transición suave para aparecer y desaparecer */
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-underline.is-visible .title-underline {
+  transform: translateX(-50%) scaleX(1); /* Estado activo: visible */
+
+
+}
+
+/* 3. Ajustamos la activación para que mantenga el centrado */
+.reveal-underline.is-visible .title-underline {
+  transform: translateX(-50%) scaleX(1);
+}
+.reveal-underline {
+  display: inline-flex; /* Esto hace que el contenedor mida lo mismo que el texto */
+  justify-content: center;
+  position: relative;
+}
+/* =========================================
+   BOTÓN BRIEFING (DESTACADO)
+========================================= */
+.btn--briefing {
+  /* Tamaño más grande */
+  padding: 16px 28px !important; 
+  font-size: 1.1rem !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  
+  /* Colores dinámicos según tu tema (Matrix, Cyberpunk, etc.) */
+  --btn-bg: linear-gradient(135deg, var(--matrix), var(--accent));
+  --btn-text: #000; /* Texto oscuro para mejor contraste sobre neón */
+  
+  border: none !important;
+  box-shadow: 0 0 20px color-mix(in oklab, var(--matrix) 40%, transparent);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.btn--briefing span {
+  position: relative;
+  z-index: 2;
+  font-weight: 800;
+}
+
+/* El efecto de brillo (Shine) */
+.btn--briefing::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: all 0.6s;
+}
+
+/* Animación de brillo al pasar el mouse */
+.btn--briefing:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 0 30px var(--matrix-glow);
+  filter: brightness(1.1);
+}
+
+.btn--briefing:hover::before {
+  left: 100%;
+  transition: 0.6s;
+}
+
+/* Pulsación sutil para que llame la atención solo */
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 15px color-mix(in oklab, var(--matrix) 30%, transparent); }
+  50% { box-shadow: 0 0 30px color-mix(in oklab, var(--matrix) 60%, transparent); }
+  100% { box-shadow: 0 0 15px color-mix(in oklab, var(--matrix) 30%, transparent); }
+}
+
+.btn--briefing {
+  animation: pulse-glow 3s infinite ease-in-out;
+}
+

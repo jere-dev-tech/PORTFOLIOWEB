@@ -12,21 +12,20 @@ const CONFIG = {
     "EJS/Plantillas ",
     "REST ",
   ],
-  projects: [
+projects: [
+    {
+      title: "Zeus Gym — GYMNASIO",
+      desc: "Landing page de alto impacto visual diseñada en Framer. Enfoque en conversiones, animaciones fluidas y diseño ultra-responsive.",
+      link: "https://fluffy-studies-846955.framer.app/",
+      tags: ["Framer", "UI/UX", "No-Code", "Web Design"],
+      cover: "assets/ZEUSLOGO.png" // Recuerda subir una captura de pantalla a tu carpeta assets
+    },
     {
       title: "Tentazione — Alfajores artesanales",
       desc: "Sitio multipágina con catálogo, formulario de pedidos, WhatsApp y mapa. UI con Tailwind y slider en JS.",
       link: "https://jere-dev-tech.github.io/tentazione-web/",
       tags: ["HTML", "CSS", "Tailwind", "JavaScript"],
       cover: "assets/TENTAZION.png"
-    },
-    {
-      title: "Mini API con Node.js",
-      desc: "API REST básica en Express para contacto.",
-      link: "#",
-      repo: "#",
-      tags: ["Node.js", "Express"],
-      cover: ""
     },
     {
       title: "Componentes UI vanilla",
@@ -42,7 +41,7 @@ const CONFIG = {
 /* =======================
    CONSTANTES GLOBALES
 ======================= */
-const HERO_START_DELAY = 2000;           // ✅ 2s tras carga
+const HERO_START_DELAY = 2000;           
 let __tDomReady = 0;
 let __heroEffectsStarted = false;
 let __heroPlayerStarted = false;
@@ -667,4 +666,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ⛳️ Inicia el loader del splash (si no hay splash, finaliza boot y agenda el hero con el delay)
   initSplashLoader();
+});
+/* =======================
+   Reveal underline
+======================= */
+const underlineObserver = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Cuando entra en vista, añadimos la clase
+        entry.target.classList.add('is-visible');
+      } else {
+        // Cuando sale de vista (hacia arriba o hacia abajo), la quitamos
+        // Esto permite que la animación se resetee
+        entry.target.classList.remove('is-visible');
+      }
+    });
+  },
+  {
+    threshold: 0.7 // Se activa cuando el 50% del título es visible
+  }
+);
+
+document.querySelectorAll('.reveal-underline').forEach(el => {
+  underlineObserver.observe(el);
 });
