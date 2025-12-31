@@ -398,6 +398,74 @@ input:focus, textarea:focus {
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(-4px); }
 }
+/* --- MEJORAS DE TAMAÑO GENERAL Y RESPONSIVIDAD --- */
+
+.container {
+  max-width: 950px; /* Un poco más ancho para pantallas grandes */
+  width: 95%;      /* Para que no toque los bordes del móvil */
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  box-sizing: border-box; /* Fundamental para que el padding no rompa el ancho */
+}
+
+/* --- CORRECCIÓN DEL DESFASE EN MÓVIL (iPhone 12 Pro / 390px) --- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Por defecto 2 columnas */
+  gap: 20px;
+}
+
+/* Forzamos que en pantallas menores a 768px todo sea 1 sola columna */
+@media (max-width: 768px) {
+  .container {
+    padding: 25px 15px; /* Reducimos padding interno para ganar espacio */
+    width: 92%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr !important; /* Una sola columna real */
+    gap: 15px;
+  }
+
+  .grid > label, 
+  .grid > .col-2, 
+  .special-box .grid > label {
+    grid-column: span 1 !important; /* Reset de cualquier expansión */
+  }
+
+  .head h2 {
+    font-size: 1.8rem; /* Título un poco más pequeño en móvil para que no rompa */
+  }
+
+  /* Ajuste para que los inputs no se salgan */
+  input, textarea, select {
+    width: 100%; 
+    box-sizing: border-box;
+  }
+
+  /* Los chips pueden apretarse mucho, les damos más aire */
+  .chips {
+    gap: 8px;
+  }
+  
+  .chips span {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Aseguramos que el label no se corte */
+label {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  word-wrap: break-word; /* Evita que el texto largo desdfase la caja */
+}
 </style>
 
 </body>
