@@ -604,65 +604,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3000);
   }
 
-  // Scramble escalonado de los .hl (se encienden luego del delay global)
-  document.querySelectorAll(".hero-title .hl").forEach((el, i) => {
-    scrambleIn(el, 180 + i * 140);
-  });
 
-  // --- Cartel de neón: encendido tipo callejón (con retardo global de 2s) ---
-  (function(){
-    const title = document.querySelector('.hero-title');
-    if(!title) return;
-
-    const START_DELAY_MS = HERO_START_DELAY;
-    const t0 = __tDomReady; // medimos desde DOM listo
-    const waitLeft = () => Math.max(0, START_DELAY_MS - (performance.now() - t0));
-    const startAfter = (fn) => setTimeout(fn, waitLeft());
-
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // 1) "Desarrollador" (ghost)
-    const ghost = title.querySelector('.ghost.big');
-    if (ghost && !ghost.classList.contains('neon-start')){
-      if (reduceMotion){
-        startAfter(() => ghost.classList.add('neon-start'));
-      } else {
-        startAfter(() => {
-          ghost.style.setProperty('--fdelay', '0s');
-          ghost.classList.add('neon-start');
-        });
-      }
-    }
-
-    // 2) Cada .hl se enciende cuando termina el scramble (cuando se quita .decoding)
-    const hls = title.querySelectorAll('.hl');
-    hls.forEach((el, i) => {
-      const fire = () => {
-        if (el.classList.contains('neon-start')) return; // evita doble encendido
-        if (reduceMotion){
-          el.classList.remove('decoding'); // por si quedó colgado
-          el.classList.add('neon-start');
-          return;
-        }
-        el.style.setProperty('--fdelay', `${0.20 + i * 0.18}s`);
-        el.classList.add('neon-start');
-      };
-
-      const schedule = () => startAfter(fire);
-
-      if (!el.classList.contains('decoding')){
-        schedule();
-      } else {
-        const mo = new MutationObserver(() => {
-          if (!el.classList.contains('decoding')){
-            mo.disconnect();
-            schedule();
-          }
-        });
-        mo.observe(el, { attributes: true, attributeFilter: ['class'] });
-      }
-    });
-  })();
 
   // ⛳️ Inicia el loader del splash (si no hay splash, finaliza boot y agenda el hero con el delay)
   initSplashLoader();
@@ -691,3 +633,74 @@ const underlineObserver = new IntersectionObserver(
 document.querySelectorAll('.reveal-underline').forEach(el => {
   underlineObserver.observe(el);
 });
+/* =======================
+   NUEVA LÓGICA DE ENTRADA
+======================= */
+function runHeroEffects() {
+    const hls = document.querySelectorAll(".hero-title .hl");
+    
+    hls.forEach((el, i) => {
+        // Ejecutamos el scramble con un pequeño desfase entre palabras
+        scrambleIn(el, i * 250); 
+        
+        // Al terminar el scramble, activamos el subrayado (neon-start)
+        // Calculamos el tiempo aproximado que dura el scramble para activar la línea
+        const duration = (el.textContent.length * 3 * 18) + (i * 250);
+        setTimeout(() => {
+            el.classList.add('neon-start');
+        }, duration);
+    });
+
+    // También para el texto "Desarrollador"
+    const ghost = document.querySelector('.ghost.big');
+    if (ghost) ghost.classList.add('neon-start');
+}
+
+// Modifica tu finalizeBoot para que llame a esta nueva función
+function finalizeBoot(){
+  startHeroPlayerNowOnce();
+  
+  // Quitamos el delay de 2s y arrancamos el scramble apenas termina el splash
+  runHeroEffects(); 
+}
+
+function scrambleIn(el, delay = 0) {
+    const chars = "abcdefghijklmnopqrstuvwxyz0123456789"; 
+    const original = el.textContent;
+    const len = original.length;
+    
+    el.classList.add("decoding");
+
+    setTimeout(() => {
+        let frame = 0;
+        let iteration = 0; // Nueva variable para controlar el ritmo
+        const frameSkip = 3; // 1 = rápido, 4 = muy lento. 3 es el punto dulce.
+        
+        const totalIterations = len * 4; // Aumentamos un poco la duración total
+        
+        function tick() {
+            // Solo actualizamos el texto cada X frames (según frameSkip)
+            if (iteration % frameSkip === 0) {
+                if (frame >= totalIterations) {
+                    el.textContent = original;
+                    el.classList.remove("decoding");
+                    return;
+                }
+
+                el.textContent = original.split("").map((ch, i) => {
+                    // Controlamos qué letras ya se revelaron definitivamente
+                    if (i < frame / 4) return ch; 
+                    if (ch === " ") return " ";
+                    return chars[(Math.random() * chars.length) | 0];
+                }).join("");
+
+                frame++;
+            }
+
+            iteration++;
+            requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+    }, delay);
+}
+

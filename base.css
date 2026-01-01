@@ -269,18 +269,26 @@ html.oceanic header.site.matrix nav a:focus-visible{
     radial-gradient(1200px 300px at 50% 100%, rgba(0,255,136,.06), transparent 65%);
 }
 
-.hero-2col{
-  position:relative; z-index:1; display:grid; align-items:center;
-  grid-template-columns: minmax(320px, 1.15fr) minmax(320px, .85fr);
-  gap: clamp(24px, 4vw, 56px);
+.hero-2col {
+  display: grid;
+  /* Forzamos 2 columnas fijas: una para el texto y otra para el Lottie */
+  /* Ajusta el 1.2fr o el 0.8fr según prefieras el reparto de pantalla */
+  grid-template-columns: 1.2fr 0.8fr; 
+  align-items: center;
+  gap: 2rem;
+  
+  /* Esto es clave: evita que los cambios internos muevan la rejilla */
+  grid-auto-rows: min-content;
+  contain: layout; 
 }
 .hero-copy{ display:flex; flex-direction:column; gap:14px; align-items:flex-start; }
 .hero-art{ display:flex; align-items:center; justify-content:flex-end; }
-.hero-illus{
-  width:min(520px, 92%); filter: drop-shadow(0 12px 30px rgba(0,0,0,.45));
-  transform: translateY(6px) scale(.98);
-  opacity:0; visibility:hidden;
-  transition: opacity .35s ease, transform .35s ease, visibility 0s linear .35s;
+.hero-illus {
+  width: 100%;
+  max-width: 500px; /* O el tamaño que desees */
+  height: auto;
+  aspect-ratio: 1 / 1; /* Mantiene el cuadrado pase lo que pase */
+  display: block;
 }
 .hero-illus.is-playing{ opacity:1; visibility:visible; transform:none; transition-delay:0s; }
 
@@ -339,7 +347,36 @@ html.oceanic header.site.matrix nav a:focus-visible{
   color:var(--text) !important; text-shadow:none !important;
 }
 .hero-title .hl.decoding::after{ display:none !important; }
+.hero-title {
+  display: block;
+  width: 100%;
+  min-height: 3.5em; /* Ajusta según cuántas líneas ocupe tu título */
+  margin: 0;
+  padding: 0;
+}
+/* Separación del párrafo Lead */
+.hero-lead {
+  margin-top: 2.5rem; /* Empuja el párrafo hacia abajo */
+  display: block;     /* Asegura que respete el margen */
+  line-height: 1.6;   /* Mejora la legibilidad */
+  max-width: 650px;   /* Evita que las líneas sean demasiado largas */
+}
 
+/* Opcional: Si quieres un efecto de entrada suave para el párrafo */
+.lead-bg {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.8s ease forwards;
+  animation-delay: 1.2s; /* Espera a que el scramble esté avanzado */
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* Subrayado animado (cuando NO está decoding) */
 .hl.fx-underline-scan:not(.decoding){ position:relative; }
 .hl.fx-underline-scan:not(.decoding)::after{
@@ -354,45 +391,45 @@ html.oceanic header.site.matrix nav a:focus-visible{
   50%{ transform: translateX(30%); }
 }
 
-/* Encendido tipo “callejón” + respiración */
-.hero-title .ghost.big.neon-start,
-.hero-title .hl.neon-start:not(.decoding){
-  animation:
-    neonAlleyOn var(--neon-on-dur, 1.6s) steps(1, end) var(--fdelay, 0s) both,
-    neonBreath var(--breath-speed, 3.6s) ease-in-out calc(var(--fdelay, 0s) + var(--neon-on-dur, 1.6s)) infinite;
+/* Eliminamos cualquier animación de parpadeo/flicker */
+.hl {
+  color: rgb(var(--neon));
+  text-shadow: 0 0 10px rgba(var(--neon), 0.5); /* Brillo constante, no parpadea */
+  transition: text-shadow 0.3s ease;
 }
-@keyframes neonAlleyOn{
-  0%   { opacity:0; filter:none; text-shadow:none; -webkit-text-stroke:.2px rgba(255,255,255,.18); }
-  6%   { opacity:1; text-shadow:0 0 4px color-mix(in oklab, var(--matrix) 30%, transparent); }
-  10%  { opacity:.15; text-shadow:none; }
-  17%  { opacity:.9; text-shadow:0 0 6px color-mix(in oklab, var(--matrix) 35%, transparent),
-                         0 0 12px color-mix(in oklab, var(--accent) 22%, transparent); }
-  23%  { opacity:.35; text-shadow:none; }
-  31%  { opacity:1; filter:brightness(1.02) contrast(1.02); }
-  39%  { opacity:.6; text-shadow:0 0 5px color-mix(in oklab, var(--matrix) 28%, transparent); }
-  47%  { opacity:1; text-shadow:0 0 7px color-mix(in oklab, var(--matrix) 30%, transparent),
-                         0 0 14px color-mix(in oklab, var(--accent) 18%, transparent); }
-  58%  { opacity:.8; }
-  72%  { opacity:1; }
-  100% { opacity:1; filter:none; }
+
+/* Estado mientras se descifra */
+.hl.decoding {
+  text-shadow: none; /* Sin brillo mientras hace el scramble */
+  opacity: 0.9;
 }
-@keyframes neonBreath{
-  0%,100%{
-    text-shadow:
-      0 0 calc(5px  * var(--breath-intensity)) color-mix(in oklab, var(--matrix) 24%, transparent),
-      0 0 calc(10px * var(--breath-intensity)) color-mix(in oklab, var(--accent) 16%, transparent);
-    filter: drop-shadow(0 0 calc(5px * var(--breath-intensity)) color-mix(in oklab, var(--matrix) 14%, transparent));
-  }
-  50%{
-    text-shadow:
-      0 0 calc(7px  * var(--breath-intensity)) color-mix(in oklab, var(--matrix) 30%, transparent),
-      0 0 calc(14px * var(--breath-intensity)) color-mix(in oklab, var(--accent) 20%, transparent);
-    filter: drop-shadow(0 0 calc(7px * var(--breath-intensity)) color-mix(in oklab, var(--matrix) 18%, transparent));
-  }
+
+/* El subrayado puede quedarse porque es una transición suave, no un parpadeo */
+.fx-underline-scan::after {
+  content: "";
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 2px;
+  background: rgb(var(--neon));
+  transition: width 0.8s ease-out;
 }
-@media (prefers-reduced-motion: reduce){
-  .hero-title .ghost.big.neon-start,
-  .hero-title .hl.neon-start:not(.decoding){ animation:none; }
+/* 1. Evitar que el texto salte */
+.hl {
+  display: inline-block;
+  /* "ch" es el ancho del carácter "0". Reservamos un ancho mínimo aproximado */
+  min-width: 2ch; 
+  text-align: left;
+}
+
+.hl.decoding {
+    /* Evitamos que el navegador intente ajustar el interletrado 
+       mientras cambian los símbolos */
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0px;
+    opacity: 0.9;
+}
+.fx-underline-scan.neon-start::after {
+  width: 100%;
 }
 
 /* Badges */
