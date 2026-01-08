@@ -269,129 +269,71 @@ html.oceanic header.site.matrix nav a:focus-visible{
     radial-gradient(1200px 300px at 50% 100%, rgba(0,255,136,.06), transparent 65%);
 }
 
-.hero-2col {
-  display: grid;
-  /* Forzamos 2 columnas fijas: una para el texto y otra para el Lottie */
-  /* Ajusta el 1.2fr o el 0.8fr según prefieras el reparto de pantalla */
-  grid-template-columns: 1.2fr 0.8fr; 
-  align-items: center;
-  gap: 2rem;
-  
-  /* Esto es clave: evita que los cambios internos muevan la rejilla */
-  grid-auto-rows: min-content;
-  contain: layout; 
-}
-.hero-copy{ display:flex; flex-direction:column; gap:14px; align-items:flex-start; }
-.hero-art{ display:flex; align-items:center; justify-content:flex-end; }
-.hero-illus {
-  width: 100%;
-  max-width: 500px; /* O el tamaño que desees */
-  height: auto;
-  aspect-ratio: 1 / 1; /* Mantiene el cuadrado pase lo que pase */
-  display: block;
-}
-.hero-illus.is-playing{ opacity:1; visibility:visible; transform:none; transition-delay:0s; }
 
-@media (max-width:900px){
-  .hero-art{ order:-1; justify-content:center; margin-bottom:10px }
-  .hero-illus{ width:min(420px, 88vw) }
-}
-@media (max-width:640px){
-  .hero-badge{ padding:10px 14px; gap:10px }
-}
-.hero-lead{
-  font-family:"Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight:600; font-size:clamp(18px, 2.4vw, 22px); letter-spacing:.2px; line-height:1.5;
-  color: color-mix(in oklab, var(--text) 95%, #eafff6);
-  display:inline-block; width:fit-content; padding:.35em .6em; border-radius:.6rem;
-  background: linear-gradient(180deg, rgba(11,17,23,.82), rgba(11,17,23,.66));
-  outline:1px solid color-mix(in oklab, var(--matrix) 22%, var(--border));
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), 0 10px 30px rgba(0,0,0,.45);
-  backdrop-filter: blur(3px) saturate(1.1); -webkit-backdrop-filter: blur(3px) saturate(1.1);
-  text-shadow:0 1px 0 rgba(0,0,0,.35);
-}
+
 .hero-title{
-  font-family:var(--font-title); font-weight:700;
-  font-size:clamp(20px, 4.4vw, 64px); line-height:1.04; letter-spacing:.2px;
+  font-family:var(--font-title);
+  font-weight:700;
+  font-size:clamp(20px,4.4vw,64px);
+  line-height:1.04;
+  letter-spacing:.2px;
   margin:10px 0 12px;
 }
-.hero-title .hero-line{ display:block; }
-.hero-title .hero-subline{
-  display:block; margin-top:.35em; font-size:clamp(18px, 2.8vw, 28px); line-height:1.25;
-}
+
 .hero-title .ghost.big{
-  font-size:clamp(44px, 7.8vw, 72px); font-weight:800; line-height:1.05;
+  font-size:clamp(44px,7.8vw,72px);
+  font-weight:800;
+  line-height:1.05;
   color:var(--text);
-  -webkit-text-stroke: calc(.9px * var(--neon-intensity)) color-mix(in oklab, var(--matrix) 52%, var(--text));
+  -webkit-text-stroke:calc(.9px * var(--neon-intensity)) color-mix(in oklab,var(--matrix) 52%,var(--text));
   text-shadow:
-    0 0 calc(5px * var(--neon-intensity)) color-mix(in oklab, var(--matrix) 26%, transparent),
-    0 0 calc(12px* var(--neon-intensity)) color-mix(in oklab, var(--accent) 18%, transparent);
-  filter:none; animation:none;
+    0 0 calc(5px * var(--neon-intensity)) color-mix(in oklab,var(--matrix) 26%,transparent),
+    0 0 calc(12px * var(--neon-intensity)) color-mix(in oklab,var(--accent) 18%,transparent);
 }
-.hero-title .web{ font-size:1.55em; line-height:1; margin-left:.25ch; vertical-align:baseline; }
 
-
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.hero-title .hl{
+  position:relative;
+  display:inline-block;
+  min-width:2ch;
+  font-family:var(--font-hl);
+  font-weight:800;
+  letter-spacing:.3px;
+  background:linear-gradient(90deg,var(--matrix),var(--accent));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 10px color-mix(in oklab,var(--matrix) 30%,transparent);
 }
-/* Subrayado animado (cuando NO está decoding) */
-.hl.fx-underline-scan:not(.decoding){ position:relative; }
-.hl.fx-underline-scan:not(.decoding)::after{
-  content:""; position:absolute; left:0; right:0; bottom:-.08em; height:2px;
-  background:linear-gradient(90deg, transparent, var(--matrix), var(--accent), transparent);
+
+.hero-title .hl.decoding{
+  background:none;
+  color:var(--text);
+  text-shadow:none;
+  letter-spacing:0;
+  font-variant-numeric:tabular-nums;
+}
+
+.hero-title .hl::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-.12em;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--matrix),var(--accent),transparent);
   filter:drop-shadow(0 0 6px var(--matrix-glow));
-  animation: underlineScan 2.4s ease-in-out infinite;
-  opacity:.85;
-}
-@keyframes underlineScan{
-  0%,100%{ transform: translateX(-30%); }
-  50%{ transform: translateX(30%); }
+  transform:scaleX(0);
+  transform-origin:center;
+  transition:transform .6s cubic-bezier(.22,1,.36,1);
 }
 
-/* Eliminamos cualquier animación de parpadeo/flicker */
-.hl {
-  color: rgb(var(--neon));
-  text-shadow: 0 0 10px rgba(var(--neon), 0.5); /* Brillo constante, no parpadea */
-  transition: text-shadow 0.3s ease;
+.hero-title .hl.neon-start::after{
+  transform:scaleX(1);
 }
 
-/* Estado mientras se descifra */
-.hl.decoding {
-  text-shadow: none; /* Sin brillo mientras hace el scramble */
-  opacity: 0.9;
-}
 
-/* El subrayado puede quedarse porque es una transición suave, no un parpadeo */
-.fx-underline-scan::after {
-  content: "";
-  position: absolute;
-  bottom: -2px; left: 0;
-  width: 0; height: 2px;
-  background: rgb(var(--neon));
-  transition: width 0.8s ease-out;
-}
-/* 1. Evitar que el texto salte */
-.hl {
-  display: inline-block;
-  /* "ch" es el ancho del carácter "0". Reservamos un ancho mínimo aproximado */
-  min-width: 2ch; 
-  text-align: left;
-}
 
-.hl.decoding {
-    /* Evitamos que el navegador intente ajustar el interletrado 
-       mientras cambian los símbolos */
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0px;
-    opacity: 0.9;
-}
-.fx-underline-scan.neon-start::after {
-  width: 100%;
-}
+
 
 /* Badges */
 .hero-badge .txt{ font-family:"Oxanium", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
