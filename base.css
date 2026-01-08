@@ -330,46 +330,7 @@ html.oceanic header.site.matrix nav a:focus-visible{
 }
 .hero-title .web{ font-size:1.55em; line-height:1; margin-left:.25ch; vertical-align:baseline; }
 
-/* Highlight base (UNA sola vez) */
-.hero-title .hl{
-  position:relative;
-  font-family:var(--font-hl); font-weight:800; letter-spacing:.3px;
-  background: linear-gradient(90deg, var(--matrix), var(--accent));
-  -webkit-background-clip:text; background-clip:text;
-  color:transparent;
-  text-shadow:0 0 10px color-mix(in oklab, var(--matrix) 30%, transparent);
-  will-change:filter;
-}
-/* Durante el scramble: texto normal + sin underline animado */
-.hero-title .hl.decoding{
-  background:none !important;
-  -webkit-background-clip:initial !important; background-clip:initial !important;
-  color:var(--text) !important; text-shadow:none !important;
-}
-.hero-title .hl.decoding::after{ display:none !important; }
-.hero-title {
-  display: block;
-  width: 100%;
-  min-height: 3.5em; /* Ajusta según cuántas líneas ocupe tu título */
-  margin: 0;
-  padding: 0;
-}
-/* Separación del párrafo Lead */
-.hero-lead {
-  margin-top: 2.5rem; /* Empuja el párrafo hacia abajo */
-  display: block;     /* Asegura que respete el margen */
-  line-height: 1.6;   /* Mejora la legibilidad */
-  max-width: 650px;   /* Evita que las líneas sean demasiado largas */
-}
 
-/* Opcional: Si quieres un efecto de entrada suave para el párrafo */
-.lead-bg {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(10px);
-  animation: fadeUp 0.8s ease forwards;
-  animation-delay: 1.2s; /* Espera a que el scramble esté avanzado */
-}
 
 @keyframes fadeUp {
   to {

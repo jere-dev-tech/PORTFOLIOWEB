@@ -528,31 +528,7 @@ function initCertsDisclosure(){
   }
 }
 
-/* =======================
-   Scramble (texto → ruido → texto)
-======================= */
-function scrambleIn(el, delay = 0, speed = 18){
-  const chars = "!<>-_\\/[]{}—=+*^?#________";
-  const original = el.textContent;
-  el.classList.add("decoding");
-  setTimeout(() => {
-    let frame = 0;
-    const total = original.length * 3 + 12;
-    (function tick(){
-      if (frame >= total){
-        el.textContent = original;
-        el.classList.remove("decoding"); // dispara el neón por el observer
-        return;
-      }
-      el.textContent = original.split("").map((ch, i) => {
-        if (i < frame / 3) return ch;
-        return chars[(Math.random() * chars.length) | 0];
-      }).join("");
-      frame++;
-      requestAnimationFrame(tick);
-    })();
-  }, delay);
-}
+
 
 /* =======================
    BOOT
@@ -633,74 +609,4 @@ const underlineObserver = new IntersectionObserver(
 document.querySelectorAll('.reveal-underline').forEach(el => {
   underlineObserver.observe(el);
 });
-/* =======================
-   NUEVA LÓGICA DE ENTRADA
-======================= */
-function runHeroEffects() {
-    const hls = document.querySelectorAll(".hero-title .hl");
-    
-    hls.forEach((el, i) => {
-        // Ejecutamos el scramble con un pequeño desfase entre palabras
-        scrambleIn(el, i * 250); 
-        
-        // Al terminar el scramble, activamos el subrayado (neon-start)
-        // Calculamos el tiempo aproximado que dura el scramble para activar la línea
-        const duration = (el.textContent.length * 3 * 18) + (i * 250);
-        setTimeout(() => {
-            el.classList.add('neon-start');
-        }, duration);
-    });
-
-    // También para el texto "Desarrollador"
-    const ghost = document.querySelector('.ghost.big');
-    if (ghost) ghost.classList.add('neon-start');
-}
-
-// Modifica tu finalizeBoot para que llame a esta nueva función
-function finalizeBoot(){
-  startHeroPlayerNowOnce();
-  
-  // Quitamos el delay de 2s y arrancamos el scramble apenas termina el splash
-  runHeroEffects(); 
-}
-
-function scrambleIn(el, delay = 0) {
-    const chars = "abcdefghijklmnopqrstuvwxyz0123456789"; 
-    const original = el.textContent;
-    const len = original.length;
-    
-    el.classList.add("decoding");
-
-    setTimeout(() => {
-        let frame = 0;
-        let iteration = 0; // Nueva variable para controlar el ritmo
-        const frameSkip = 3; // 1 = rápido, 4 = muy lento. 3 es el punto dulce.
-        
-        const totalIterations = len * 4; // Aumentamos un poco la duración total
-        
-        function tick() {
-            // Solo actualizamos el texto cada X frames (según frameSkip)
-            if (iteration % frameSkip === 0) {
-                if (frame >= totalIterations) {
-                    el.textContent = original;
-                    el.classList.remove("decoding");
-                    return;
-                }
-
-                el.textContent = original.split("").map((ch, i) => {
-                    // Controlamos qué letras ya se revelaron definitivamente
-                    if (i < frame / 4) return ch; 
-                    if (ch === " ") return " ";
-                    return chars[(Math.random() * chars.length) | 0];
-                }).join("");
-
-                frame++;
-            }
-
-            iteration++;
-            requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
-    }, delay);
-}
 

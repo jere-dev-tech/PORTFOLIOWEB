@@ -3,156 +3,236 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Formulario Briefing | Proyecto Web</title>
+  <title>Briefing Estratégico | Proyecto Web</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<section id="contratame" class="contact-wrap">
+<section class="contact-wrap">
   <div class="container">
+
+    <!-- HEADER -->
     <header class="head">
-   <div class="back-wrap">
-  <a class="btn-back" href="index.html">
-    <span class="arrow">←</span>
-    <span class="text">Volver al inicio</span>
-  </a>
-</div>
-      <h2>Briefing del proyecto</h2>
-      <p>Este formulario me permite entender tu negocio y evaluar el desarrollo de tu sitio web.</p>
-      <div class="disclaimer">
-        <span>⚠️ Completar el formulario no implica un compromiso de contratación.</span>
+      <div class="back-wrap">
+        <a class="btn-back" href="index.html">
+          <span class="arrow">←</span>
+          <span class="text">Volver al inicio</span>
+        </a>
       </div>
+
+      <h2>Briefing del proyecto web</h2>
+      <p>
+        Este formulario me permite entender tu negocio, evitar errores,
+        y diseñar una web alineada a tus objetivos reales.
+        Cuanto más claro respondas, mejor será el resultado.
+      </p>
     </header>
 
-    <form id="contratameForm" action="https://formspree.io/f/mblzjnep" method="POST">
-      <input type="hidden" name="_subject" value="Nuevo Briefing de Proyecto">
+    <!-- FORM -->
+    <form action="https://formspree.io/f/mblzjnep" method="POST">
+      <input type="hidden" name="_subject" value="Nuevo Briefing Web">
       <input type="text" name="_gotcha" style="display:none">
 
+      <!-- 01 NEGOCIO -->
       <fieldset>
-        <legend><span>01</span> Datos de la empresa</legend>
+        <legend><span>01</span> Sobre tu negocio</legend>
         <div class="grid">
-          <label>Nombre de la empresa
-            <input type="text" name="nombre_comercial" required placeholder="Ej: Mi Negocio S.A.">
+          <label>Nombre comercial
+            <input type="text" name="nombre_comercial" required>
           </label>
           <label>Rubro
-            <input type="text" name="rubro" required placeholder="Ej: Estética, Abogacía, Ecommerce...">
+            <input type="text" name="rubro" required placeholder="Ej: Carpinteria, Constructora, Arquitectura">
           </label>
           <label>Dirección
-            <input type="text" name="direccion" placeholder="Ciudad, País">
+            <input type="text" name="direccion" placeholder="Ciudad / Provincia">
           </label>
-          <label>Teléfono / WhatsApp
-            <input type="text" name="telefono" placeholder="+54 9 ...">
+          <label>WhatsApp o teléfono
+            <input type="text" name="telefono">
           </label>
           <label class="col-2">Redes sociales (links)
-            <input type="text" name="redes_sociales" placeholder="Instagram, Facebook, TikTok...">
+            <input type="text" name="redes">
           </label>
         </div>
       </fieldset>
 
-      <fieldset class="special-box">
-        <legend><span>02</span> Identidad y Rostro</legend>
-        <div class="grid">
-          <label class="col-2">¿Quieren mostrar su rostro en la web? (Fotos o videos)
-            <select name="mostrar_rostro">
-              <option value="Si">Sí, queremos humanizar la marca</option>
-              <option value="No">No, preferimos usar stock o ilustraciones</option>
-              <option value="Solo equipo">Solo fotos grupales</option>
-              <option value="A decidir">Aún no lo sabemos</option>
-            </select>
-          </label>
-          <label class="col-2">¿Quiénes forman parte de la empresa y qué rol ocupan?
-            <textarea name="equipo_roles" rows="3" placeholder="Ej: Juan (Director), Marta (Ventas), Lucas (Logística)..."></textarea>
-          </label>
-          <label class="col-2">¿Quién responderá los mensajes/turnos que lleguen desde la web?
-            <input type="text" name="responsable_mensajes" placeholder="Nombre o departamento encargado">
-          </label>
-        </div>
-      </fieldset>
-
+      <!-- 02 OBJETIVO -->
       <fieldset>
-        <legend><span>03</span> Objetivos del sitio</legend>
-        <p class="field-info">Selecciona los que mejor se adapten a tu necesidad:</p>
+        <legend><span>02</span> Objetivo del sitio</legend>
+        <p class="field-info">¿Para qué querés la web?</p>
         <div class="chips">
-          <label><input type="checkbox" name="objetivo" value="Informar"><span>Mostrar información</span></label>
-          <label><input type="checkbox" name="objetivo" value="Vender"><span>Vender online</span></label>
-          <label><input type="checkbox" name="objetivo" value="Catalogo"><span>Catálogo</span></label>
-          <label><input type="checkbox" name="objetivo" value="Captar"><span>Captar clientes</span></label>
-          <label><input type="checkbox" name="objetivo" value="Consultas"><span>Recibir consultas</span></label>
-          <label><input type="checkbox" name="objetivo" value="Reservas"><span>Reservas / turnos</span></label>
-          <label><input type="checkbox" name="objetivo" value="SEO"><span>Posicionamiento Google</span></label>
+          <label><input type="checkbox" name="objetivo" value="Informar"><span>Informar</span></label>
+          <label><input type="checkbox" name="objetivo" value="Captar clientes"><span>Captar clientes</span></label>
+          <label><input type="checkbox" name="objetivo" value="Vender"><span>Vender</span></label>
+          <label><input type="checkbox" name="objetivo" value="Catálogo"><span>Mostrar catálogo</span></label>
+          <label><input type="checkbox" name="objetivo" value="Reservas"><span>Turnos / reservas</span></label>
+          <label><input type="checkbox" name="objetivo" value="SEO"><span>Posicionarse en Google</span></label>
         </div>
       </fieldset>
 
+      <!-- 03 CONVERSIÓN -->
       <fieldset>
-        <legend><span>04</span> Contenidos Actuales</legend>
+        <legend><span>03</span> Acción principal</legend>
         <div class="grid">
-          <label class="col-2">Textos
-            <textarea name="textos" rows="3" placeholder="¿Qué textos tienen listos y cuáles faltan?"></textarea>
-          </label>
-          <label>¿Tienen fotos propias?
-            <select name="fotos_videos">
-              <option value="Si">Sí</option>
-              <option value="Parcial">Algunas</option>
-              <option value="No">No tengo</option>
+          <label class="col-2">¿Qué debería hacer el visitante apenas entra?
+            <select name="accion_principal">
+              <option>Enviar WhatsApp</option>
+              <option>Pedir presupuesto</option>
+              <option>Reservar turno</option>
+              <option>Comprar</option>
+              <option>Conocer la empresa</option>
             </select>
           </label>
-          <label>¿Tienen Logo y Colores?
+        </div>
+      </fieldset>
+
+      <!-- 04 CLIENTE IDEAL -->
+      <fieldset>
+        <legend><span>04</span> Cliente ideal</legend>
+        <div class="grid">
+          <label>Tipo de cliente
+            <input type="text" name="publico_objetivo" placeholder="Ej: Familias, empresas, particulares">
+          </label>
+          <label>Nivel del cliente
+            <select name="nivel_cliente">
+              <option>Popular</option>
+              <option>Clase media</option>
+              <option>Premium</option>
+              <option>Mixto</option>
+            </select>
+          </label>
+          <label class="col-2">Zona donde están tus clientes
+            <input type="text" name="zona_clientes" placeholder="Catamarca capital, Valle Viejo, online">
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- 05 DIFERENCIAL -->
+      <fieldset>
+        <legend><span>05</span> Diferencial competitivo</legend>
+        <div class="grid">
+          <label class="col-2">¿Por qué deberían elegirte a vos?
+            <textarea name="diferencial" rows="3"></textarea>
+          </label>
+          <label class="col-2">¿Qué problema principal resolvés?
+            <textarea name="problema" rows="2"></textarea>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- 06 IDENTIDAD -->
+      <fieldset>
+        <legend><span>06</span> Identidad y estilo</legend>
+        <div class="grid">
+          <label>¿Tenés logo y colores?
             <select name="branding">
-              <option value="Si">Sí, manual de marca listo</option>
-              <option value="No">No, necesito diseño</option>
+              <option>Sí</option>
+              <option>No</option>
+            </select>
+          </label>
+          <label>Estilo deseado
+            <select name="estilo">
+              <option>Minimalista</option>
+              <option>Moderno</option>
+              <option>Corporativo</option>
+              <option>Visual / impactante</option>
+              <option>No lo sé</option>
+            </select>
+          </label>
+          <label class="col-2">Webs que te gusten (links)
+            <textarea name="referencias" rows="3"></textarea>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- 07 CONTENIDO -->
+      <fieldset>
+        <legend><span>07</span> Contenido disponible</legend>
+        <div class="grid">
+          <label>¿Tenés textos?
+            <select name="textos">
+              <option>Sí</option>
+              <option>Parcial</option>
+              <option>No</option>
+            </select>
+          </label>
+          <label>¿Fotos propias?
+            <select name="fotos">
+              <option>Sí</option>
+              <option>Algunas</option>
+              <option>No</option>
             </select>
           </label>
         </div>
       </fieldset>
 
+      <!-- 08 FUNCIONALIDADES -->
       <fieldset>
-        <legend><span>05</span> Funcionalidades</legend>
+        <legend><span>08</span> Funcionalidades</legend>
         <div class="chips">
-          <label><input type="checkbox" name="funcionalidad" value="WhatsApp"><span>Botón WhatsApp</span></label>
-          <label><input type="checkbox" name="funcionalidad" value="Mapa"><span>Google Maps</span></label>
-          <label><input type="checkbox" name="funcionalidad" value="Carrito"><span>Carrito de compras</span></label>
-          <label><input type="checkbox" name="funcionalidad" value="Envios"><span>Cálculo de envíos</span></label>
-          <label><input type="checkbox" name="funcionalidad" value="Reservas"><span>Sistema de Reservas</span></label>
+          <label><input type="checkbox" name="funcionalidad" value="WhatsApp"><span>WhatsApp</span></label>
+          <label><input type="checkbox" name="funcionalidad" value="Mapa"><span>Mapa</span></label>
+          <label><input type="checkbox" name="funcionalidad" value="Formulario"><span>Formulario</span></label>
+          <label><input type="checkbox" name="funcionalidad" value="Reservas"><span>Reservas</span></label>
+          <label><input type="checkbox" name="funcionalidad" value="Carrito"><span>Carrito</span></label>
         </div>
       </fieldset>
 
+      <!-- 09 ORGANIZACIÓN -->
       <fieldset>
-        <legend><span>06</span> Inversión y Plazos</legend>
+        <legend><span>09</span> Organización del proyecto</legend>
+        <div class="grid">
+          <label>Quién aprueba el proyecto
+            <input type="text" name="aprobador">
+          </label>
+          <label>Frecuencia de revisión
+            <select name="revision">
+              <option>Semanal</option>
+              <option>Por etapas</option>
+              <option>Solo al final</option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- 10 INVERSIÓN -->
+      <fieldset>
+        <legend><span>10</span> Inversión y tiempos</legend>
         <div class="grid">
           <label>Presupuesto estimado
-            <input type="text" name="presupuesto" placeholder="Ej: $150.000 - $300.000">
+            <input type="text" name="presupuesto" placeholder="$">
           </label>
-          <label>Fecha de lanzamiento
-            <input type="date" name="fecha_limite">
+          <label>Fecha deseada de entrega
+            <input type="date" name="fecha">
           </label>
         </div>
       </fieldset>
 
+      <!-- 11 CONTACTO -->
       <fieldset>
-        <legend><span>07</span> Tu contacto</legend>
+        <legend><span>11</span> Datos de contacto</legend>
         <div class="grid">
-          <label>Tu Nombre
+          <label>Nombre
             <input type="text" name="nombre" required>
           </label>
-          <label>Tu Email
+          <label>Email
             <input type="email" name="email" required>
           </label>
-          <label class="col-2">Detalles finales
-            <textarea name="mensaje" rows="3" placeholder="Algo más que deba saber..."></textarea>
+          <label class="col-2">Comentario final
+            <textarea name="mensaje" rows="3"></textarea>
           </label>
         </div>
       </fieldset>
 
-      <div id="form-end" class="actions">
-        <button type="submit" class="btn-submit">Enviar Briefing Estratégico</button>
-        <p class="form-note">Responderé a tu correo en un plazo de 24-48hs hábiles.</p>
+      <div class="actions">
+        <button type="submit" class="btn-submit">Enviar briefing</button>
+        <p class="form-note">Respuesta en 24–48 hs hábiles</p>
       </div>
+
     </form>
   </div>
 </section>
-
 <style>
-/* VARIABLES COHERENTES CON TU WEB */
+
 :root {
   --bg: #0b0c10;
   --surface: #111217;
@@ -180,7 +260,7 @@ body {
   box-sizing: border-box;
 }
 
-/* 2. Ajustamos el contenedor para que se expanda más */
+
 .container {
   max-width: 1200px; /* Lo hacemos aún más ancho si la pantalla lo permite */
   width: 98%;       /* Que ocupe casi el 100% del ancho disponible en móviles */
@@ -195,7 +275,7 @@ body {
   border-radius: 28px;
 }
 
-/* 3. REGLA DE ORO PARA MÓVILES (iPhone 12 Pro, etc) */
+
 @media (max-width: 768px) {
   .contact-wrap {
     padding: 20px 5px; /* Casi nada de margen externo en celular */
