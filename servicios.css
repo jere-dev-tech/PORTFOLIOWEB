@@ -235,6 +235,14 @@
   transition: box-shadow .25s ease, transform .25s ease;
 }
 
+.features li:has(details) {
+  display: block;
+}
+
+.features li:has(details)::before {
+  display: none;
+}
+
 @media (hover:hover) {
   .service-card:hover .features li::before {
     box-shadow:
