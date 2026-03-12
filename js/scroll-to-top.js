@@ -1,5 +1,6 @@
 /**
  * Scroll to Top — detect real scroll container, add .visible when scroll > 80px.
+ * Moved from root scroll-to-top.js to js/scroll-to-top.js
  */
 (function () {
   function getScrollTop() {
@@ -77,3 +78,4 @@
     init();
   }
 })();
+

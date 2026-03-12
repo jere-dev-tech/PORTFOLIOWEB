@@ -1,3 +1,4 @@
+// Moved from root main.js to js/main.js
 /* =======================
    CONFIGURACIÓN RÁPIDA
 ======================= */
@@ -15,7 +16,7 @@ const CONFIG = {
 projects: [
     {
       title: "Vidriería El Jumeal",
-      desc: "Sitio web para una vidriería local desarrollado en Framer con CMS, con catálogo visual de productos y mejoras personalizadas en CSS y JavaScript como el botón de scroll-to-top.",
+      desc: "Sitio web para una vidriería local desarrollado en Framer con CMS, con catálogo visual de productos y diseño optimizado para mostrar servicios y facilitar el contacto con clientes.",
       link: "https://eljumealvidrieria.com",
       tags: ["Framer", "CMS", "CSS", "JavaScript"],
       cover: "assets/eljumealvidrieria.com_.png"
