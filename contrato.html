@@ -3,11 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Briefing Estratégico | Proyecto Web</title>
+  <title>Contame sobre tu proyecto web | JereDev</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-
+  <button type="button" class="Btn" aria-label="Back to top">
+    <svg height="1.2em" class="arrow" viewBox="0 0 512 512" aria-hidden="true">
+      <path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path>
+    </svg>
+    <p class="text">Back to Top</p>
+  </button>
 <section class="contact-wrap">
   <div class="container">
 
@@ -20,22 +25,41 @@
         </a>
       </div>
 
-      <h2>Briefing del proyecto web</h2>
+      <h2>Contame sobre tu proyecto web</h2>
+      <p class="form-time">
+        ⏱️ Este formulario tarda aproximadamente
+        <span class="no-break">2–3 minutos</span>
+        en completarse.
+      </p>
       <p>
-        Este formulario me permite entender tu negocio, evitar errores,
-        y diseñar una web alineada a tus objetivos reales.
-        Cuanto más claro respondas, mejor será el resultado.
+        Con unas preguntas simples voy a entender tu negocio y qué necesitás.
+        Así armamos una página que realmente te sirva. No hace falta saber de tecnología.
       </p>
     </header>
 
+    <div class="trust-block">
+      <p>✔ Respuesta en 24–48 horas</p>
+      <p>✔ Sin compromiso</p>
+      <p>✔ Te ayudo a definir tu proyecto web</p>
+    </div>
+
+    <div class="form-progress">
+      <div class="progress-info">
+        <span id="progress-step">Paso 1 de 11 — Tu negocio</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
     <!-- FORM -->
     <form action="https://formspree.io/f/mblzjnep" method="POST">
-      <input type="hidden" name="_subject" value="Nuevo Briefing Web">
+      <input type="hidden" name="_subject" value="Solicitud de página web">
       <input type="text" name="_gotcha" style="display:none">
 
       <!-- 01 NEGOCIO -->
       <fieldset>
-        <legend><span>01</span> Sobre tu negocio</legend>
+        <legend><span>01</span> Tu negocio</legend>
         <div class="grid">
           <label>Nombre comercial
             <input type="text" name="nombre_comercial" required>
@@ -57,8 +81,8 @@
 
       <!-- 02 OBJETIVO -->
       <fieldset>
-        <legend><span>02</span> Objetivo del sitio</legend>
-        <p class="field-info">¿Para qué querés la web?</p>
+        <legend><span>02</span> ¿Para qué querés la página?</legend>
+        <p class="field-info">Elegí todo lo que aplique a tu proyecto</p>
         <div class="chips">
           <label><input type="checkbox" name="objetivo" value="Informar"><span>Informar</span></label>
           <label><input type="checkbox" name="objetivo" value="Captar clientes"><span>Captar clientes</span></label>
@@ -71,9 +95,9 @@
 
       <!-- 03 CONVERSIÓN -->
       <fieldset>
-        <legend><span>03</span> Acción principal</legend>
+        <legend><span>03</span> ¿Qué querés que haga la gente al entrar?</legend>
         <div class="grid">
-          <label class="col-2">¿Qué debería hacer el visitante apenas entra?
+          <label class="col-2">La acción más importante para vos
             <select name="accion_principal">
               <option>Enviar WhatsApp</option>
               <option>Pedir presupuesto</option>
@@ -87,12 +111,12 @@
 
       <!-- 04 CLIENTE IDEAL -->
       <fieldset>
-        <legend><span>04</span> Cliente ideal</legend>
+        <legend><span>04</span> ¿A quién le querés vender?</legend>
         <div class="grid">
-          <label>Tipo de cliente
+          <label>Tu cliente ideal (en pocas palabras)
             <input type="text" name="publico_objetivo" placeholder="Ej: Familias, empresas, particulares">
           </label>
-          <label>Nivel del cliente
+          <label>¿Qué tipo de cliente es?
             <select name="nivel_cliente">
               <option>Popular</option>
               <option>Clase media</option>
@@ -108,12 +132,12 @@
 
       <!-- 05 DIFERENCIAL -->
       <fieldset>
-        <legend><span>05</span> Diferencial competitivo</legend>
+        <legend><span>05</span> ¿Qué te hace único?</legend>
         <div class="grid">
-          <label class="col-2">¿Por qué deberían elegirte a vos?
-            <textarea name="diferencial" rows="3"></textarea>
+          <label class="col-2">¿Por qué te eligen a vos y no a la competencia?
+            <textarea name="diferencial" rows="3" placeholder="Contame en tus palabras"></textarea>
           </label>
-          <label class="col-2">¿Qué problema principal resolvés?
+          <label class="col-2">¿Qué problema le resolvés a tu cliente?
             <textarea name="problema" rows="2"></textarea>
           </label>
         </div>
@@ -121,9 +145,9 @@
 
       <!-- 06 IDENTIDAD -->
       <fieldset>
-        <legend><span>06</span> Identidad y estilo</legend>
+        <legend><span>06</span> Cómo querés que se vea</legend>
         <div class="grid">
-          <label>¿Tenés logo y colores?
+          <label>¿Tenés logo y colores de tu marca?
             <select name="branding">
               <option>Sí</option>
               <option>No</option>
@@ -146,9 +170,9 @@
 
       <!-- 07 CONTENIDO -->
       <fieldset>
-        <legend><span>07</span> Contenido disponible</legend>
+        <legend><span>07</span> ¿Qué material tenés?</legend>
         <div class="grid">
-          <label>¿Tenés textos?
+          <label>¿Tenés los textos escritos?
             <select name="textos">
               <option>Sí</option>
               <option>Parcial</option>
@@ -167,7 +191,7 @@
 
       <!-- 08 FUNCIONALIDADES -->
       <fieldset>
-        <legend><span>08</span> Funcionalidades</legend>
+        <legend><span>08</span> ¿Qué necesitás en la página?</legend>
         <div class="chips">
           <label><input type="checkbox" name="funcionalidad" value="WhatsApp"><span>WhatsApp</span></label>
           <label><input type="checkbox" name="funcionalidad" value="Mapa"><span>Mapa</span></label>
@@ -179,16 +203,16 @@
 
       <!-- 09 ORGANIZACIÓN -->
       <fieldset>
-        <legend><span>09</span> Organización del proyecto</legend>
+        <legend><span>09</span> Cómo trabajamos</legend>
         <div class="grid">
-          <label>Quién aprueba el proyecto
+          <label>¿Quién toma las decisiones del proyecto?
             <input type="text" name="aprobador">
           </label>
-          <label>Frecuencia de revisión
+          <label>¿Cada cuánto querés ver avances?
             <select name="revision">
-              <option>Semanal</option>
-              <option>Por etapas</option>
-              <option>Solo al final</option>
+              <option>Cada semana</option>
+              <option>Por etapas (cuando termino cada parte)</option>
+              <option>Revisión solo al final</option>
             </select>
           </label>
         </div>
@@ -196,12 +220,12 @@
 
       <!-- 10 INVERSIÓN -->
       <fieldset>
-        <legend><span>10</span> Inversión y tiempos</legend>
+        <legend><span>10</span> Presupuesto y plazos</legend>
         <div class="grid">
-          <label>Presupuesto estimado
+          <label>¿Tenés un presupuesto en mente?
             <input type="text" name="presupuesto" placeholder="$">
           </label>
-          <label>Fecha deseada de entrega
+          <label>¿Para cuándo la necesitás? (aprox.)
             <input type="date" name="fecha">
           </label>
         </div>
@@ -209,7 +233,7 @@
 
       <!-- 11 CONTACTO -->
       <fieldset>
-        <legend><span>11</span> Datos de contacto</legend>
+        <legend><span>11</span> Tus datos para contactarte</legend>
         <div class="grid">
           <label>Nombre
             <input type="text" name="nombre" required>
@@ -217,15 +241,15 @@
           <label>Email
             <input type="email" name="email" required>
           </label>
-          <label class="col-2">Comentario final
-            <textarea name="mensaje" rows="3"></textarea>
+          <label class="col-2">Algo más que quieras contarme
+            <textarea name="mensaje" rows="3" placeholder="Cualquier duda o idea que tengas"></textarea>
           </label>
         </div>
       </fieldset>
 
       <div class="actions">
-        <button type="submit" class="btn-submit">Enviar briefing</button>
-        <p class="form-note">Respuesta en 24–48 hs hábiles</p>
+        <button type="submit" class="btn-submit">Quiero mi página web</button>
+        <p class="form-note">Te respondo en 24–48 horas hábiles. Sin compromiso.</p>
       </div>
 
     </form>
@@ -311,6 +335,52 @@ body {
   transition: color 0.3s;
 }
 .btn-back:hover { color: var(--primary); }
+
+.form-time {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0 0 12px 0;
+}
+.no-break {
+  white-space: nowrap;
+}
+
+.trust-block {
+  margin: 20px 0 30px 0;
+  padding: 15px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.trust-block p { margin: 0; }
+
+.form-progress {
+  margin: 30px 0;
+}
+.progress-info {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.3s ease;
+}
 
 .disclaimer {
   background: rgba(110, 231, 183, 0.1);
@@ -599,7 +669,227 @@ label {
   flex-direction: column;
   word-wrap: break-word; /* Evita que el texto largo desdfase la caja */
 }
-</style>
 
+/* Scroll to Top (Back to Top button) */
+button.Btn {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(#44ea76, #39fad7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  border: none;
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+button.Btn.visible {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+button.Btn .arrow path {
+  fill: white;
+}
+button.Btn .text {
+  font-size: 0.7em;
+  width: 100px;
+  position: absolute;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: -18px;
+  opacity: 0;
+  transition-duration: 0.7s;
+}
+button.Btn:hover .text {
+  opacity: 1;
+}
+button.Btn:hover .arrow {
+  animation: slide-in-bottom 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+@keyframes slide-in-bottom {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+</style>
+<script>
+(function(){
+  function getScrollTop() {
+    return window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+  }
+  function getScrollTopParent() {
+    try {
+      if (window !== window.top) {
+        var p = window.parent;
+        return p.pageYOffset || p.document.documentElement.scrollTop || p.document.body.scrollTop || 0;
+      }
+    } catch (e) {}
+    return 0;
+  }
+  function findScrollContainer() {
+    var main = document.querySelector("main");
+    if (main) {
+      var cs = document.defaultView.getComputedStyle(main);
+      var ov = cs.overflowY || cs.overflow;
+      if (ov === "auto" || ov === "scroll" || ov === "overlay") return main;
+    }
+    for (var i = 0; i < document.body.children.length; i++) {
+      var el = document.body.children[i];
+      if (el.tagName === "SCRIPT" || el.tagName === "STYLE") continue;
+      if (el.classList && el.classList.contains("Btn")) continue;
+      var cs = document.defaultView.getComputedStyle(el);
+      var ov = cs.overflowY || cs.overflow;
+      if ((ov === "auto" || ov === "scroll" || ov === "overlay") && el.scrollHeight > el.clientHeight)
+        return el;
+    }
+    return document.scrollingElement || document.documentElement;
+  }
+  var scrollContainer = findScrollContainer();
+  var isWindowScroll = !scrollContainer || scrollContainer === document.documentElement || scrollContainer === document.body;
+  function getScrollTopFromContainer() {
+    if (isWindowScroll) return getScrollTop();
+    return scrollContainer.scrollTop || 0;
+  }
+  function updateBtn() {
+    var btn = document.querySelector(".Btn");
+    if (!btn) return;
+    var scrollTop = Math.max(
+      getScrollTop(),
+      getScrollTopFromContainer(),
+      getScrollTopParent()
+    );
+    if (scrollTop > 80) btn.classList.add("visible");
+    else btn.classList.remove("visible");
+  }
+  function scrollToTop() {
+    try {
+      if (window !== window.top) window.parent.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (e) {}
+    if (!isWindowScroll && scrollContainer && scrollContainer.scrollTo) scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  var btn = document.querySelector(".Btn");
+  if (!btn) return;
+  window.addEventListener("scroll", updateBtn, { passive: true });
+  if (scrollContainer && scrollContainer !== document.documentElement && scrollContainer.addEventListener) {
+    scrollContainer.addEventListener("scroll", updateBtn, { passive: true });
+  }
+  document.addEventListener("scroll", updateBtn, { passive: true });
+  try {
+    if (window !== window.top) window.parent.addEventListener("scroll", updateBtn, { passive: true });
+  } catch (e) {}
+  btn.addEventListener("click", scrollToTop);
+  updateBtn();
+})();
+</script>
+<script>
+const fieldsets = document.querySelectorAll("form fieldset");
+const progressFill = document.getElementById("progress-fill");
+const progressStep = document.getElementById("progress-step");
+
+function updateProgress(){
+  let current = 0;
+
+  fieldsets.forEach((fs, index) => {
+    const rect = fs.getBoundingClientRect();
+
+    if(rect.top < window.innerHeight * 0.5){
+      current = index + 1;
+    }
+  });
+
+  const percent = (current / fieldsets.length) * 100;
+
+  progressFill.style.width = percent + "%";
+
+  const legend = fieldsets[current - 1] ? fieldsets[current - 1].querySelector("legend") : null;
+  const sectionTitle = legend
+    ? legend.textContent.replace(/^\d+\s*/, "").trim()
+    : "";
+  progressStep.textContent =
+    "Paso " + current + " de " + fieldsets.length + (sectionTitle ? " — " + sectionTitle : "");
+}
+
+window.addEventListener("scroll", updateProgress);
+
+updateProgress();
+</script>
+<script>
+const form = document.querySelector("form");
+const STORAGE_KEY = "briefing_form_data";
+
+function saveFormData() {
+  const formData = {};
+
+  form.querySelectorAll("input, textarea, select").forEach(field => {
+
+    if (field.type === "checkbox") {
+
+      if (!formData[field.name]) {
+        formData[field.name] = [];
+      }
+
+      if (field.checked) {
+        formData[field.name].push(field.value);
+      }
+
+    } else {
+      formData[field.name] = field.value;
+    }
+
+  });
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+}
+
+function loadFormData() {
+
+  const saved = localStorage.getItem(STORAGE_KEY);
+
+  if (!saved) return;
+
+  const formData = JSON.parse(saved);
+
+  form.querySelectorAll("input, textarea, select").forEach(field => {
+
+    if (field.type === "checkbox") {
+
+      if (formData[field.name] && formData[field.name].includes(field.value)) {
+        field.checked = true;
+      }
+
+    } else if (formData[field.name]) {
+      field.value = formData[field.name];
+    }
+
+  });
+
+}
+
+form.addEventListener("input", saveFormData);
+form.addEventListener("change", saveFormData);
+
+form.addEventListener("submit", () => {
+  localStorage.removeItem(STORAGE_KEY);
+});
+
+window.addEventListener("load", loadFormData);
+</script>
 </body>
 </html>

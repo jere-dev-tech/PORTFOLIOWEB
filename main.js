@@ -14,11 +14,11 @@ const CONFIG = {
   ],
 projects: [
     {
-      title: "Zeus — GYMNASIO",
-      desc: "Landing page de alto impacto visual diseñada en Framer. Enfoque en conversiones, animaciones fluidas y diseño ultra-responsive.",
-      link: "https://zeusgym.framer.website/",
-      tags: ["Framer", "UI/UX", "No-Code", "Web Design"],
-      cover: "assets/ZEUSLOGO.png" // Recuerda subir una captura de pantalla a tu carpeta assets
+      title: "Vidriería El Jumeal",
+      desc: "Sitio web para una vidriería local desarrollado en Framer con CMS, con catálogo visual de productos y mejoras personalizadas en CSS y JavaScript como el botón de scroll-to-top.",
+      link: "https://eljumealvidrieria.com",
+      tags: ["Framer", "CMS", "CSS", "JavaScript"],
+      cover: "assets/eljumealvidrieria.com_.png"
     },
     {
       title: "Tentazione — Alfajores artesanales",
@@ -28,12 +28,20 @@ projects: [
       cover: "assets/TENTAZION.png"
     },
     {
-      title: "Componentes UI vanilla",
-      desc: "Modal, tabs y toast con JavaScript puro.",
-      link: "#",
-      repo: "#",
-      tags: ["JavaScript"],
-      cover: ""
+      title: "iShop — Tienda de celulares",
+      desc: "Landing page moderna para una tienda de celulares y tecnología, enfocada en mostrar productos destacados y promociones.",
+      link: "https://ishopdemo.vercel.app/",
+      tags: ["HTML", "CSS", "JavaScript"],
+      cover: "assets/ishopdemo.vercel.png",
+      coverAlt: "iShop tienda de celulares"
+    },
+    {
+      title: "Un Café — Cafetería",
+      desc: "Sitio web visual para cafetería con diseño atractivo, menú destacado y estilo moderno para atraer clientes.",
+      link: "https://uncafedemo.vercel.app/",
+      tags: ["HTML", "CSS", "JavaScript"],
+      cover: "assets/cafe.png",
+      coverAlt: "Sitio web para café"
     }
   ]
 };
@@ -180,9 +188,9 @@ function renderProjects(containerSel, items){
     const card = document.createElement("article");
     card.className = "card";
 
-    const coverStyle = p.cover
-      ? `style="background-image:url('${p.cover}');"`
-      : "";
+    const coverHtml = p.cover
+      ? `<div class="card-image"><img src="${p.cover}" alt="${p.coverAlt || p.title || ""}" loading="lazy"></div>`
+      : '<div class="thumb"></div>';
 
     const hasDemo = p.link && p.link !== "#";
     const hasRepo = p.repo && p.repo !== "#";
@@ -193,7 +201,7 @@ function renderProjects(containerSel, items){
           <path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3z"/>
           <path d="M5 5h6v2H7v10h10v-4h2v6H5V5z"/>
         </svg>
-        <span>Demo</span>
+        <span>Ver sitio</span>
       </a>` : "";
 
     const codeBtn = hasRepo ? `
@@ -205,7 +213,7 @@ function renderProjects(containerSel, items){
       </a>` : "";
 
     card.innerHTML = `
-      <div class="thumb" ${coverStyle}></div>
+      <div class="card-image-wrap">${coverHtml}</div>
       <div class="card-body">
         <h3>${p.title}</h3>
         <p class="muted">${p.desc || ""}</p>

@@ -75,6 +75,7 @@
 
     <!-- ===== HERO (con fondo) ===== -->
     <section class="hero hero-neon">
+      <div class="stars"></div>
       <!-- Capa de fondo que pinta el CSS -->
       <div class="hero-bg"></div>
 
@@ -96,7 +97,7 @@
 
 <p class="lead hero-lead">
   <span class="lead-bg">
-    Transformando ideas en proyectos reales, enfocado en interfaces accesibles y de alto rendimiento.
+    Llevo tu negocio a la web con una página clara, moderna y pensada para que te contacten.
   </span>
 </p>
 
@@ -140,7 +141,7 @@
             </a>
 
             <a class="btn btn--briefing" href="contrato.html">
-  <span>Formulario Briefing</span>
+  <span>Solicitar mi página web</span>
 </a>
 
           </div>
@@ -384,8 +385,89 @@
   </div>
 </footer>
 
-
   <!-- Lottiees-->
   <script type="module" src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+  <script>
+  (function() {
+    var starsContainer = document.querySelector(".hero .stars");
+    if (!starsContainer) return;
+    var n = Math.floor(80 + Math.random() * 41);
+    for (var i = 0; i < n; i++) {
+      var star = document.createElement("span");
+      star.classList.add("star");
+      star.style.left = Math.random() * 100 + "%";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.animationDelay = Math.random() * 5 + "s";
+      star.style.animationDuration = (2 + Math.random() * 3) + "s";
+      star.style.setProperty("--star-max", (0.25 + Math.random() * 0.5).toFixed(2));
+      starsContainer.appendChild(star);
+    }
+  })();
+  </script>
+
+  <button class="Btn" id="scrollTopBtn" type="button" aria-label="Back to top">
+    <svg height="1.2em" class="arrow" viewBox="0 0 512 512">
+      <path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path>
+    </svg>
+    <p class="text">Volver arriba</p>
+  </button>
+
+  <script>
+  const btn = document.getElementById("scrollTopBtn");
+  const splash = document.getElementById("splash");
+  if (btn) {
+    function loaderVisible() {
+      if (document.body.classList.contains("splashing")) return true;
+      if (splash && !splash.classList.contains("hide")) return true;
+      return false;
+    }
+
+    function updateVisibility() {
+      if (loaderVisible()) {
+        btn.style.display = "none";
+        return;
+      }
+      var scroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      try {
+        if (window !== window.top) scroll = Math.max(scroll, window.parent.pageYOffset || window.parent.scrollY || 0);
+      } catch (e) {}
+      btn.style.display = scroll > 150 ? "flex" : "none";
+    }
+
+    btn.style.display = "none";
+
+    btn.addEventListener("click", function() {
+      var opts = { top: 0, behavior: "smooth" };
+      window.scrollTo(opts);
+      if (document.documentElement && document.documentElement.scrollTo) document.documentElement.scrollTo(opts);
+      if (document.body && document.body.scrollTo) document.body.scrollTo(opts);
+      try {
+        if (window !== window.top && window.parent.scrollTo) window.parent.scrollTo(opts);
+      } catch (e) {}
+      document.body.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+
+    if (splash) {
+      var observer = new MutationObserver(updateVisibility);
+      observer.observe(splash, { attributes: true, attributeFilter: ["class"] });
+    }
+
+    var checkCount = 0;
+    var intervalId = setInterval(function() {
+      updateVisibility();
+      checkCount++;
+      if (checkCount > 25) clearInterval(intervalId);
+    }, 400);
+
+    setTimeout(updateVisibility, 500);
+    setTimeout(updateVisibility, 2000);
+    setTimeout(function() {
+      if (!loaderVisible() && btn.style.display === "none") btn.style.display = "flex";
+    }, 3500);
+  }
+  </script>
 </body>
 </html>

@@ -13,6 +13,12 @@
 </head>
 
 <body class="bg-[#0b0c10] text-white antialiased">
+  <button type="button" class="Btn" aria-label="Back to top">
+    <svg height="1.2em" class="arrow" viewBox="0 0 512 512" aria-hidden="true">
+      <path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"></path>
+    </svg>
+    <p class="text">Back to Top</p>
+  </button>
   <!-- HERO -->
   <section class="py-16 md:py-20">
     <div class="max-w-6xl mx-auto px-4 text-center">
@@ -54,7 +60,7 @@
             </svg>
           </span>
 
-          <span>Completar formulario</span>
+          <span>Solicitar mi página web</span>
         </a>
       </div>
 
@@ -548,6 +554,79 @@
 
     </div>
   </section>
+  <script>
+  (function(){
+    function getScrollTop() {
+      return window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0;
+    }
+    function getScrollTopParent() {
+      try {
+        if (window !== window.top) {
+          var p = window.parent;
+          return p.pageYOffset || p.document.documentElement.scrollTop || p.document.body.scrollTop || 0;
+        }
+      } catch (e) {}
+      return 0;
+    }
+    function findScrollContainer() {
+      var main = document.querySelector("main");
+      if (main) {
+        var cs = document.defaultView.getComputedStyle(main);
+        var ov = cs.overflowY || cs.overflow;
+        if (ov === "auto" || ov === "scroll" || ov === "overlay") return main;
+      }
+      for (var i = 0; i < document.body.children.length; i++) {
+        var el = document.body.children[i];
+        if (el.tagName === "SCRIPT" || el.tagName === "STYLE") continue;
+        if (el.classList && el.classList.contains("Btn")) continue;
+        var cs = document.defaultView.getComputedStyle(el);
+        var ov = cs.overflowY || cs.overflow;
+        if ((ov === "auto" || ov === "scroll" || ov === "overlay") && el.scrollHeight > el.clientHeight)
+          return el;
+      }
+      return document.scrollingElement || document.documentElement;
+    }
+    var scrollContainer = findScrollContainer();
+    var isWindowScroll = !scrollContainer || scrollContainer === document.documentElement || scrollContainer === document.body;
+    function getScrollTopFromContainer() {
+      if (isWindowScroll) return getScrollTop();
+      return scrollContainer.scrollTop || 0;
+    }
+    function updateBtn() {
+      var btn = document.querySelector(".Btn");
+      if (!btn) return;
+      var scrollTop = Math.max(
+        getScrollTop(),
+        getScrollTopFromContainer(),
+        getScrollTopParent()
+      );
+      if (scrollTop > 80) btn.classList.add("visible");
+      else btn.classList.remove("visible");
+    }
+    function scrollToTop() {
+      try {
+        if (window !== window.top) window.parent.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (e) {}
+      if (!isWindowScroll && scrollContainer && scrollContainer.scrollTo) scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    var btn = document.querySelector(".Btn");
+    if (!btn) return;
+    window.addEventListener("scroll", updateBtn, { passive: true });
+    if (scrollContainer && scrollContainer !== document.documentElement && scrollContainer.addEventListener) {
+      scrollContainer.addEventListener("scroll", updateBtn, { passive: true });
+    }
+    document.addEventListener("scroll", updateBtn, { passive: true });
+    try {
+      if (window !== window.top) window.parent.addEventListener("scroll", updateBtn, { passive: true });
+    } catch (e) {}
+    btn.addEventListener("click", scrollToTop);
+    updateBtn();
+  })();
+  </script>
 </body>
 
 </html>
